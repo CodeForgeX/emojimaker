@@ -82,7 +82,7 @@ const App: Component = () => {
     })
     getRandom()
   }
-  
+
   // lifecycle
   onMount(() => {
     loadImage()
@@ -108,10 +108,10 @@ const App: Component = () => {
       images.forEach(img => {
         img && ctx.drawImage(img, 0, 0, canvasSize, canvasSize)
       })
-      canvas.classList.add('animation')
+      canvas.classList.add('canvas-pop')
       setTimeout(() => {
-        canvas.classList.remove('animation')
-      }, 500)
+        canvas.classList.remove('canvas-pop')
+      }, 600)
     })
   })
 
@@ -141,7 +141,7 @@ const App: Component = () => {
       a.download = `emoji_${Date.now()}`
       a.click()
   }
-  
+
   const toSVGBlob = async () => {
       const parser = new DOMParser()
       const documents = await Promise.all(Object.values(selectedImage()).map(image => fetch(image).then(response => response.text())))
@@ -154,102 +154,143 @@ const App: Component = () => {
   }
 
   return (
-    <>
-      <Header />
-      <main
-        flex="~ col" items-center justify-center gap-4
-        max-w="65ch" px-6 py-12
-        mx-auto bg-white rounded-lg bg-op-80
-        shadow="2xl black/10"
-        dark:bg-dark
-        md:px-24
-      >
-        <div flex items-center justify-center w="200px" h="200px" border-2 border-neutral-400 border-op-20 rounded-2xl>
-          <canvas ref={canvas} width={canvasSize} height={canvasSize} w="160px" h="160px" class="animation"></canvas>
-        </div>
-        <div flex h-12 gap-2>
-          <button
-            flex items-center justify-center w-12 rounded-full
-            bg-neutral-100 dark:bg-neutral-600
-            text-black dark:text-white border-none
-            cursor-pointer transition-colors
-            hover="bg-violet-200 dark:bg-violet-400"
-            onClick={getRandom}
-          >
-            <div i-material-symbols-refresh text-2xl />
-          </button>
-          <button
-            inline-flex px-3 items-center gap-1 rounded-full
-            bg-neutral-100 dark:bg-neutral-600
-            text-black dark:text-white border-none
-            cursor-pointer transition-colors
-            hover="bg-violet-200 dark:bg-violet-400"
-            onClick={() => canvas.toBlob(exportImage)}
-          >
-            <div i-material-symbols-download-rounded text-2xl />
-            <span font-bold mr-1>Export PNG</span>
-          </button>
-          <button
-            inline-flex px-3 items-center gap-1 rounded-full
-            bg-neutral-100 dark:bg-neutral-600
-            text-black dark:text-white border-none
-            cursor-pointer transition-colors
-            hover="bg-violet-200 dark:bg-violet-400"
-            onClick={() => toSVGBlob().then(exportImage)}
-          >
-            <div i-material-symbols-download-rounded text-2xl />
-            <span font-bold mr-1>Export SVG</span>
-          </button>
-        </div>
-        <div w-full mt-4>
-          <header flex flex-wrap items-center gap-3 p-4 border-b border-neutral-400 border-op-20 justify-center>
-            <For each={tabs}>
-              {(item, index) => (
-                <button
-                  flex items-center justify-center
-                  h-16 w-16 rounded-lg
-                  cursor-pointer transition-colors border-none
-                  hover="bg-violet-200 dark:bg-violet-200"
-                  class={selectedTab() === item ? 'bg-violet-200 dark:bg-violet-200' : 'bg-neutral-100 dark:bg-neutral-600'}
-                  onClick={() => setSelectedTab(item)}
-                >
-                  <Show
-                    when={selectedImage()[item]}
-                  >
-                    <img src={selectedImage()[item]} alt={selectedTab() + index()} h-12 w-12></img>
-                  </Show>
-                </button>
-              )}
-            </For>
-          </header>
-          <main p-4>
-            <div flex="~ wrap" gap-2 justify-center>
-              <Switch>
-                <For each={Object.keys(images())}>
-                  {(tab: EmojiSlice) => (
-                    <Match when={tab === selectedTab()}>
-                      <For each={images()[tab]}>
-                        {(item, index) => (
-                          <SelectButton
-                            highlight={() => index() === selectedIndex()[selectedTab()]}
-                            onClick={[handleSelectItem, {tab: selectedTab(), index: index() }]}
-                          >
-                            <Show when={item}>
-                              <img src={item} alt={selectedTab() + index()} h-10 w-10></img>
-                            </Show>
-                          </SelectButton>
-                        )}
-                      </For>
-                    </Match>
-                  )}
-                </For>
-              </Switch>
+    <div class="page-layout">
+      <aside class="ad-column ad-column--left" aria-hidden="true" data-slot="ad-left"></aside>
+
+      <div class="page-content">
+        <Header />
+
+        {/* 主容器 - Fluent Design 风格 */}
+        <main class="emoji-maker-container" aria-label="Emoji creation workspace - customize faces with heads, eyes, eyebrows, mouths and details">
+          {/* 左侧：预览和操作区 */}
+          <section class="preview-section" aria-labelledby="preview-heading">
+            <h2 id="preview-heading" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;">
+              Emoji Preview and Export
+            </h2>
+            {/* 精致的预览区 */}
+            <div class="canvas-container">
+              <div class="canvas-glow"></div>
+              <div class="canvas-wrapper">
+                <canvas
+                  ref={canvas}
+                  width={canvasSize}
+                  height={canvasSize}
+                  class="emoji-canvas"
+                  role="img"
+                  aria-label="Custom emoji preview"
+                ></canvas>
+              </div>
             </div>
-          </main>
-        </div>
-      </main>
-      <Footer />
-    </>
+
+            {/* 操作按钮组 */}
+            <div class="action-buttons">
+              {/* 随机按钮 - 主要操作 */}
+              <button
+                class="btn-primary btn-random"
+                onClick={getRandom}
+                aria-label="Generate random emoji combination"
+              >
+                <span class="btn-icon-wrapper" aria-hidden="true">
+                  <div i-material-symbols-refresh />
+                </span>
+                <span class="btn-text">Randomize</span>
+                <span class="btn-shine"></span>
+              </button>
+
+              {/* 导出按钮组 */}
+              <div class="export-group">
+                <button
+                  class="btn-export"
+                  onClick={() => canvas.toBlob(exportImage)}
+                  aria-label="Download emoji as PNG image"
+                >
+                  <div i-material-symbols-download-rounded aria-hidden="true" />
+                  <span>PNG</span>
+                </button>
+
+                <button
+                  class="btn-export"
+                  onClick={() => toSVGBlob().then(exportImage)}
+                  aria-label="Download emoji as SVG vector"
+                >
+                  <div i-material-symbols-download-rounded aria-hidden="true" />
+                  <span>SVG</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* 右侧：编辑选项区 */}
+          <section class="editor-section" aria-labelledby="editor-heading">
+            <h2 id="editor-heading" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;">
+              Customize Emoji Parts
+            </h2>
+            {/* 精致的标签栏 */}
+            <nav class="tab-bar" aria-label="Emoji part categories">
+              <For each={tabs}>
+                {(item, index) => (
+                  <button
+                    class={`tab-button ${selectedTab() === item ? 'active' : ''}`}
+                    onClick={() => setSelectedTab(item)}
+                    role="tab"
+                    aria-selected={selectedTab() === item}
+                    aria-controls={`panel-${item}`}
+                    id={`tab-${item}`}
+                  >
+                    <div class="tab-icon-wrapper" aria-hidden="true">
+                      <Show when={selectedImage()[item]}>
+                        <img src={selectedImage()[item]} alt={`Current ${item} selection preview`} />
+                      </Show>
+                    </div>
+                    <span class="tab-label">{item}</span>
+                  </button>
+                )}
+              </For>
+            </nav>
+
+            {/* 选项网格 - 精致滚动 */}
+            <div class="options-container">
+              <div
+                class="options-grid"
+                role="tabpanel"
+                id={`panel-${selectedTab()}`}
+                aria-labelledby={`tab-${selectedTab()}`}
+              >
+                <Switch>
+                  <For each={Object.keys(images())}>
+                    {(tab: EmojiSlice) => (
+                      <Match when={tab === selectedTab()}>
+                        <For each={images()[tab]}>
+                          {(item, index) => (
+                            <button
+                              class={`option-item ${index() === selectedIndex()[selectedTab()] ? 'selected' : ''}`}
+                              onClick={[handleSelectItem, {tab: selectedTab(), index: index() }]}
+                              aria-label={`${selectedTab()} option ${index() + 1}${index() === selectedIndex()[selectedTab()] ? ' (selected)' : ''}`}
+                              aria-pressed={index() === selectedIndex()[selectedTab()]}
+                            >
+                              <div class="option-inner">
+                                <Show when={item}>
+                                  <img src={item} alt={`${selectedTab()} style ${index() + 1}`} />
+                                </Show>
+                              </div>
+                              <div class="option-hover-effect"></div>
+                            </button>
+                          )}
+                        </For>
+                      </Match>
+                    )}
+                  </For>
+                </Switch>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <Footer />
+      </div>
+
+      <aside class="ad-column ad-column--right" aria-hidden="true" data-slot="ad-right"></aside>
+    </div>
   )
 }
 
