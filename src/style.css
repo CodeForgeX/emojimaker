@@ -606,6 +606,7 @@ html.dark .option-item:hover {
     padding: calc(var(--content-spacing) * 1.5);
     margin: 0;
     gap: calc(var(--content-spacing) * 1.5);
+    align-content: start;
   }
 
   /* 预览区垂直布局 */

@@ -1,0 +1,11 @@
+# Cloudflare Pages 配置（部署前请填写 account_id 或通过 CLI 参数传入）
+name = "fluent-emoji-maker"
+compatibility_date = "2024-04-01"
+
+[env.production.vars]
+# 部署时可通过 Cloudflare Dashboard 设置，也可在 CLI 中覆盖
+VITE_GTAG_ID = "XXX"
+
+[pages]
+pages_build_output_dir = "./dist"
+pages_build_command = "npm run build"
