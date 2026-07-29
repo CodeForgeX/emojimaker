@@ -1,0 +1,123 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Faq from '../components/Faq.astro'
+import EmojiMaker from '../components/islands/EmojiMaker'
+import { graph, organization, webApplication, faqPage, breadcrumb, howTo } from '../lib/schema'
+
+const path = '/slack-emoji-maker/'
+const title = 'Slack Emoji Maker — Create Custom Slack Emojis (128×128)'
+const description =
+  'Make custom Slack emojis in your browser: design one from 100+ parts and export a Slack-ready 128×128 PNG, then upload it in seconds. Free, no sign-up required.'
+
+const uploadSteps = [
+  { name: 'Design and download your emoji', text: 'Use the maker above, choose the 128×128 export size and download the PNG. It lands well under Slack’s 128KB limit.' },
+  { name: 'Open Slack’s emoji settings', text: 'In Slack, click your workspace name → Customize Workspace → Emoji, or go to add emoji directly from any emoji picker via “Add emoji”.' },
+  { name: 'Upload and name it', text: 'Click “Add Custom Emoji”, upload the PNG, give it a name like :party-blob: and save. It’s instantly available to everyone in the workspace.' },
+]
+
+const faqItems = [
+  {
+    q: 'What size should a Slack emoji be?',
+    a: 'Slack resizes uploads to fit a 128×128 pixel square and requires files under 128KB. A 128×128 PNG with a transparent background — exactly what this maker exports — is the sweet spot: sharp, small, and no cropping surprises.',
+  },
+  {
+    q: 'How do I add a custom emoji to Slack?',
+    a: 'Click your workspace name → Customize Workspace → Emoji → Add Custom Emoji, then upload the PNG and pick a name. Any member can do this unless admins restricted it. The emoji becomes available workspace-wide immediately.',
+  },
+  {
+    q: 'Can Slack emojis be animated?',
+    a: 'Yes — Slack accepts animated GIFs as custom emojis (still under 128KB). This maker exports static PNG/SVG; for most reaction emojis a crisp static image reads better at small sizes anyway.',
+  },
+  {
+    q: 'Is this Slack emoji maker free?',
+    a: 'Yes. No sign-up, no watermark, unlimited downloads. Everything runs in your browser, so your emoji never touches a server.',
+  },
+  {
+    q: 'Do custom emojis work in Slack threads and reactions?',
+    a: 'Yes. Once uploaded, your custom emoji behaves like any built-in emoji: use it in messages with :name:, as a reaction, and in statuses.',
+  },
+]
+
+const schema = graph(
+  organization(),
+  webApplication({
+    path,
+    name: 'Slack Emoji Maker',
+    description,
+    features: ['128×128 PNG export sized for Slack', 'Under Slack’s 128KB limit', 'Transparent background', 'Free, no sign-up'],
+  }),
+  howTo({
+    path,
+    name: 'How to add a custom emoji to Slack',
+    description: 'Create a 128×128 emoji and upload it to your Slack workspace.',
+    steps: uploadSteps,
+  }),
+  faqPage(path, faqItems),
+  breadcrumb([{ name: 'Home', path: '/' }, { name: 'Slack Emoji Maker', path }]),
+)
+---
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <main class="page container">
+    <section class="hero">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › Slack Emoji Maker</nav>
+      <h1>Slack Emoji Maker: Custom Emojis Sized for Slack</h1>
+      <p class="lede">
+        Design a custom emoji and export a Slack-ready 128×128 transparent PNG — under the 128KB
+        limit, no sign-up, no watermark.
+      </p>
+      <ul class="hero-badges" aria-label="Highlights">
+        <li>128×128 preset</li>
+        <li>&lt; 128KB output</li>
+        <li>Transparent PNG</li>
+        <li>Free forever</li>
+      </ul>
+    </section>
+
+    <EmojiMaker client:load sizes={[128, 640]} filePrefix="slack-emoji" />
+
+    <section>
+      <div class="section-head">
+        <p class="eyebrow">Upload guide</p>
+        <h2>How to add your emoji to Slack</h2>
+      </div>
+      <ol class="steps">
+        {uploadSteps.map((s) => (<li><b>{s.name}</b><span>{s.text}</span></li>))}
+      </ol>
+    </section>
+
+    <section class="prose prose-page">
+      <h2>Slack custom emoji requirements</h2>
+      <div class="spec-table-wrap card">
+        <table class="spec">
+          <thead><tr><th>Requirement</th><th>Slack’s rule</th><th>What this maker exports</th></tr></thead>
+          <tbody>
+            <tr><td>Dimensions</td><td>Resized to 128×128</td><td>Exact 128×128 PNG</td></tr>
+            <tr><td>File size</td><td>Under 128KB</td><td>Typically 5–30KB</td></tr>
+            <tr><td>Formats</td><td>PNG, JPG, GIF</td><td>PNG (transparent)</td></tr>
+            <tr><td>Background</td><td>Transparent recommended</td><td>Transparent by default</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Tip: bold shapes and high contrast survive Slack's small reaction size best. Test your emoji
+        at 22px (reaction size) — if it still reads, it's a keeper. Need Discord or Twitch versions of
+        the same emoji? Use the <a href="/discord-emoji-maker/">Discord emoji maker</a> or the
+        <a href="/twitch-emote-maker/">Twitch emote maker</a> for the right sizes.
+      </p>
+    </section>
+
+    <Faq items={faqItems} />
+
+    <section class="related">
+      <div class="section-head">
+        <p class="eyebrow">Keep creating</p>
+        <h2>More free emoji tools</h2>
+      </div>
+      <ul>
+        <li><a href="/discord-emoji-maker/"><b>Discord Emoji Maker</b><span>Same maker, Discord-ready 128×128 export.</span></a></li>
+        <li><a href="/emoji-combiner/"><b>Emoji Combiner</b><span>Merge two emojis into one — great for reaction mashups.</span></a></li>
+        <li><a href="/guides/how-to-make-custom-emojis/"><b>Custom Emoji Guide</b><span>Every way to make custom emojis, compared.</span></a></li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>

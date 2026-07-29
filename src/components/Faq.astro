@@ -1,0 +1,21 @@
+---
+/**
+ * Visible FAQ section. The matching FAQPage JSON-LD must be added to the page's
+ * BaseLayout schema via faqPage(path, items) with the SAME items, so the markup
+ * and structured data always agree.
+ */
+interface Props {
+  heading?: string
+  items: { q: string; a: string }[]
+}
+const { heading = 'Frequently asked questions', items } = Astro.props
+---
+<section class="faq" aria-labelledby="faq-h">
+  <h2 id="faq-h">{heading}</h2>
+  {items.map((item, i) => (
+    <details open={i === 0}>
+      <summary>{item.q}</summary>
+      <p set:html={item.a} />
+    </details>
+  ))}
+</section>

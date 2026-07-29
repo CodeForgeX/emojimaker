@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Faq from '../components/Faq.astro'
+import EmojiMaker from '../components/islands/EmojiMaker'
+import { graph, organization, webApplication, faqPage, breadcrumb } from '../lib/schema'
+
+const path = '/'
+const title = 'Emoji Maker — Create Custom Emojis Online (Free, No Sign-Up)'
+const description =
+  'Make your own emoji online: mix 100+ Fluent-style heads, eyes, mouths and details, then download as PNG or SVG. Free custom emoji maker — no sign-up, no watermark.'
+
+const faqItems = [
+  {
+    q: 'Is this emoji maker really free?',
+    a: 'Yes — completely free and open source. There is no account, no watermark, no download limit and no “Pro” tier. Everything runs locally in your browser.',
+  },
+  {
+    q: 'What formats can I download my emoji in?',
+    a: 'PNG (raster, up to 640×640) and SVG (scalable vector). SVG is rare among emoji makers: it stays sharp at any size and can be edited later in Figma or Illustrator.',
+  },
+  {
+    q: 'Can I use my custom emoji in Discord, Slack or Twitch?',
+    a: 'Yes. Export a PNG and upload it to any platform that accepts custom emojis. We also have dedicated makers with the exact sizes: <a href="/slack-emoji-maker/">Slack (128×128)</a>, <a href="/discord-emoji-maker/">Discord (128×128)</a> and <a href="/twitch-emote-maker/">Twitch (112/56/28)</a>.',
+  },
+  {
+    q: 'Can I use the emojis commercially?',
+    a: 'The artwork is based on Microsoft Fluent Emoji, released under the MIT license, so you can use your creations in personal and commercial projects. Attribution is appreciated but not required.',
+  },
+  {
+    q: 'How many emoji combinations are possible?',
+    a: 'With 8 heads, 26 eyes, 6 eyebrows, 40 mouths and 22 details (each optional part can also be left off), there are over 200,000 unique combinations. The Randomize button is the fastest way to explore them.',
+  },
+  {
+    q: 'Do I need to install an app?',
+    a: 'No. It is a web app that works in any modern browser on desktop, Android and iPhone. Nothing is uploaded — your emoji is composed entirely on your device.',
+  },
+]
+
+const schema = graph(
+  organization(),
+  webApplication({
+    path,
+    name: 'Emoji Maker',
+    description,
+    features: [
+      'Mix 100+ Fluent-style parts (heads, eyes, eyebrows, mouths, details)',
+      'Export as PNG or SVG vector',
+      'One-click randomizer',
+      'No sign-up, no watermark',
+      'Runs fully in the browser',
+    ],
+  }),
+  faqPage(path, faqItems.map(({ q, a }) => ({ q, a: a.replace(/<[^>]+>/g, '') }))),
+  breadcrumb([{ name: 'Home', path: '/' }]),
+)
+---
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <main class="page container">
+    <section class="hero">
+      <h1>Emoji Maker: Create Your Own Custom Emoji Online</h1>
+      <p class="lede">
+        Mix and match heads, eyes, eyebrows, mouths and details in Microsoft's Fluent style —
+        then download your emoji as a PNG or a crisp SVG vector.
+      </p>
+      <ul class="hero-badges" aria-label="Highlights">
+        <li>100% free</li>
+        <li>No sign-up</li>
+        <li>PNG + SVG export</li>
+        <li>Runs in your browser</li>
+      </ul>
+    </section>
+
+    <EmojiMaker client:load sizes={[640, 512, 128]} filePrefix="custom-emoji" />
+
+    <section>
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2>Make a custom emoji in three steps</h2>
+      </div>
+      <ol class="steps">
+        <li><b>Pick your parts.</b><span>Switch between the head, eyes, eyebrows, mouth and detail tabs and tap any option to apply it instantly.</span></li>
+        <li><b>Shuffle for inspiration.</b><span>Hit <em>Randomize</em> to jump to one of 200,000+ combinations, then fine-tune the parts you want to keep.</span></li>
+        <li><b>Download PNG or SVG.</b><span>Choose an export size (640, 512 or 128 pixels) for PNG, or grab the SVG if you want an editable, infinitely scalable file.</span></li>
+      </ol>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <p class="eyebrow">Why this maker</p>
+        <h2>A custom emoji maker without the usual catches</h2>
+      </div>
+      <ul class="feature-grid">
+        <li class="card"><span class="emoji" aria-hidden="true">🧩</span><h3>200,000+ combinations</h3><p>Five layers of official-quality Fluent Emoji artwork to remix however you like.</p></li>
+        <li class="card"><span class="emoji" aria-hidden="true">🖼️</span><h3>SVG vector export</h3><p>Most emoji generators stop at PNG. Here you get a true SVG you can scale or edit later.</p></li>
+        <li class="card"><span class="emoji" aria-hidden="true">📐</span><h3>Platform-ready sizes</h3><p>Export 128×128 for Slack and Discord, or use the dedicated <a href="/twitch-emote-maker/">Twitch emote maker</a> for 112/56/28.</p></li>
+        <li class="card"><span class="emoji" aria-hidden="true">🔒</span><h3>Private by design</h3><p>Everything renders locally in your browser. No uploads, no tracking of your creations.</p></li>
+        <li class="card"><span class="emoji" aria-hidden="true">🆓</span><h3>Free, no watermark</h3><p>No account, no paywall, no locked parts. Download as many emojis as you want.</p></li>
+        <li class="card"><span class="emoji" aria-hidden="true">✨</span><h3>Fluent style</h3><p>Built on Microsoft's open-source Fluent Emoji set — the same look you know from Windows 11.</p></li>
+      </ul>
+    </section>
+
+    <Faq items={faqItems} />
+
+    <section class="related">
+      <div class="section-head">
+        <p class="eyebrow">Keep creating</p>
+        <h2>More free emoji tools</h2>
+      </div>
+      <ul>
+        <li><a href="/emoji-combiner/"><b>Emoji Combiner</b><span>Merge two emojis into one image — like Emoji Kitchen, but in your browser.</span></a></li>
+        <li><a href="/random-emoji-generator/"><b>Random Emoji Generator</b><span>Roll 1–20 random emojis and copy them with a click.</span></a></li>
+        <li><a href="/emoji-combinations/"><b>Emoji Combinations</b><span>Aesthetic, cute and funny combos ready to copy-paste.</span></a></li>
+        <li><a href="/guides/how-to-make-custom-emojis/"><b>How to Make Custom Emojis</b><span>Every method compared: online tools, Genmoji, Emoji Kitchen and more.</span></a></li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>

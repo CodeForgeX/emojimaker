@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Faq from '../components/Faq.astro'
+import EmojiCombiner from '../components/islands/EmojiCombiner'
+import { graph, organization, article, faqPage, breadcrumb, webApplication } from '../lib/schema'
+
+const path = '/emoji-kitchen/'
+const title = 'Emoji Kitchen: How to Use It + Free Online Alternative'
+const description =
+  'What Emoji Kitchen is, how to get it on Gboard, Android and iPhone, why some emojis won’t combine — plus a free browser-based emoji combiner for any device.'
+
+const faqItems = [
+  {
+    q: 'What is Emoji Kitchen?',
+    a: 'Emoji Kitchen is a Google feature that merges two emojis into a single hand-designed sticker. It launched in Gboard in 2020 and is also available by searching “emoji kitchen” on Google. The mashups are pre-drawn by Google designers, which is why they look so polished.',
+  },
+  {
+    q: 'How do I get Emoji Kitchen?',
+    a: 'On Android, install Google’s Gboard keyboard, open any chat, tap an emoji and you’ll see mashup suggestions. On any device — including iPhone and desktop — you can also search “emoji kitchen” on Google and use the built-in mixer, then copy the sticker.',
+  },
+  {
+    q: 'Is Emoji Kitchen on iPhone?',
+    a: 'There is no Gboard Emoji Kitchen keyboard integration on iOS, but the Google Search version works in Safari. Alternatively, our emoji combiner on this page runs in any browser and lets you download the result as a PNG instead of just copying a sticker.',
+  },
+  {
+    q: 'Why is Emoji Kitchen not working for some emojis?',
+    a: 'Google only ships mashups for pairs its designers have drawn — tens of thousands of combos, but not every possible pair. If a pair has no artwork, nothing appears. A DIY combiner has no such limit because it composes the two emojis directly.',
+  },
+  {
+    q: 'Is Emoji Kitchen AI?',
+    a: 'No. Emoji Kitchen combinations are pre-designed illustrations, not AI-generated images. That’s different from Apple’s Genmoji, which generates emoji-style images with AI — see our <a href="/genmoji-online/">Genmoji guide</a>.',
+  },
+  {
+    q: 'How do I save or copy Emoji Kitchen stickers?',
+    a: 'In Gboard, tapping a mashup pastes it into the chat as a sticker. From Google Search, use “Copy” — most apps will paste it as an image. With the combiner below, you download a transparent 640×640 PNG you can reuse anywhere, including as custom emojis in Discord or Slack.',
+  },
+]
+
+const schema = graph(
+  organization(),
+  article({
+    path,
+    headline: 'Emoji Kitchen: How It Works, Where to Get It, and a Browser-Based Alternative',
+    description,
+    datePublished: '2026-07-29',
+  }),
+  webApplication({
+    path,
+    name: 'Emoji Combiner (Emoji Kitchen Alternative)',
+    description: 'Browser-based emoji combiner that merges any two emojis into a downloadable PNG on any device.',
+  }),
+  faqPage(path, faqItems.map(({ q, a }) => ({ q, a: a.replace(/<[^>]+>/g, '') }))),
+  breadcrumb([{ name: 'Home', path: '/' }, { name: 'Emoji Kitchen', path }]),
+)
+---
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <main class="page container">
+    <section class="hero">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › Emoji Kitchen</nav>
+      <h1>Emoji Kitchen: How It Works — and How to Mix Emojis on Any Device</h1>
+      <p class="lede">
+        Google's Emoji Kitchen turns two emojis into one delightful sticker. Here's how to use it,
+        where it's available, and a free alternative that runs right in your browser.
+      </p>
+    </section>
+
+    <section class="prose prose-page">
+      <h2>What is Emoji Kitchen?</h2>
+      <p>
+        Emoji Kitchen is a feature from Google that "cooks" two emojis into a single mashup sticker —
+        a cowboy-hat ghost, a heart-eyed cactus, a crying fire. Every combination is a real
+        illustration drawn by Google's design team, which is why the results look far better than a
+        simple overlay. It debuted in <strong>Gboard</strong> (Google's keyboard app) in 2020 and has
+        grown to tens of thousands of combinations.
+      </p>
+
+      <h2>How to use Emoji Kitchen</h2>
+      <h3>On Android (Gboard)</h3>
+      <p>
+        Install Gboard, open any messaging app, tap the emoji button and select an emoji. Mashup
+        suggestions appear above the keyboard; tap one to send it as a sticker.
+      </p>
+      <h3>On iPhone and desktop (Google Search)</h3>
+      <p>
+        Search <em>“emoji kitchen”</em> on Google and tap <em>Get cooking</em>. You can pick two
+        emojis and copy the resulting sticker. This works in Safari and Chrome on any device — no
+        Gboard needed.
+      </p>
+
+      <div class="callout">
+        <p>
+          <strong>No Gboard? Pair not supported?</strong> The combiner below merges <em>any</em> two
+          emojis directly in your browser and exports a transparent PNG you can download — something
+          Emoji Kitchen itself doesn't offer.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <p class="eyebrow">Try it now</p>
+        <h2>Free Emoji Kitchen alternative: mix any two emojis</h2>
+      </div>
+      <EmojiCombiner client:visible />
+    </section>
+
+    <section class="prose prose-page">
+      <h2>Emoji Kitchen vs. this combiner</h2>
+      <div class="spec-table-wrap card">
+        <table class="spec">
+          <thead><tr><th>Feature</th><th>Emoji Kitchen</th><th>EmojiMaker Combiner</th></tr></thead>
+          <tbody>
+            <tr><td>Artwork</td><td>Hand-drawn mashups</td><td>Live composition of the real emojis</td></tr>
+            <tr><td>Supported pairs</td><td>Curated list only</td><td>Any two emojis</td></tr>
+            <tr><td>Where it works</td><td>Gboard (Android), Google Search</td><td>Any modern browser</td></tr>
+            <tr><td>Output</td><td>Sticker to send/copy</td><td>Transparent 640×640 PNG download</td></tr>
+            <tr><td>Custom emoji upload (Discord/Slack)</td><td>Manual workaround</td><td>Yes — download and upload</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <Faq items={faqItems} />
+
+    <section class="related">
+      <div class="section-head">
+        <p class="eyebrow">Keep creating</p>
+        <h2>Related tools and guides</h2>
+      </div>
+      <ul>
+        <li><a href="/emoji-combiner/"><b>Emoji Combiner</b><span>The full combiner tool with layouts, sliders and PNG export.</span></a></li>
+        <li><a href="/"><b>Emoji Maker</b><span>Design a custom emoji from scratch with Fluent-style parts.</span></a></li>
+        <li><a href="/genmoji-online/"><b>Genmoji Online</b><span>Apple's AI emoji, explained — and what to use on other devices.</span></a></li>
+        <li><a href="/emoji-combinations/"><b>Emoji Combinations</b><span>Ready-made combos to copy for bios and captions.</span></a></li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Faq from '../components/Faq.astro'
+import EmojiMaker from '../components/islands/EmojiMaker'
+import { graph, organization, article, webApplication, faqPage, breadcrumb } from '../lib/schema'
+
+const path = '/genmoji-online/'
+const title = 'Genmoji Online: Web Alternative for Android, Windows & More'
+const description =
+  'Genmoji is Apple-only — but you can still make custom emojis online. See which devices support Genmoji and what to use instead on Android, Windows or any browser.'
+
+const faqItems = [
+  {
+    q: 'Can I use Genmoji online or on the web?',
+    a: 'No — Genmoji has no web version. It only exists inside Apple Intelligence on supported iPhones, iPads and Macs. If you’re on another device, a browser-based maker like the one on this page is the practical alternative: it creates custom emoji images you can download and use anywhere.',
+  },
+  {
+    q: 'Is there Genmoji for Android?',
+    a: 'There is no official Genmoji app for Android. Android users can combine emojis with Gboard’s Emoji Kitchen, or build fully custom emojis right here in the browser — no install needed.',
+  },
+  {
+    q: 'Which devices support Genmoji?',
+    a: 'Genmoji requires Apple Intelligence: iPhone 15 Pro or newer (and all iPhone 16/17 models), iPads and Macs with M1 or later, running iOS/iPadOS 18.2+ or macOS Sequoia 15.2+. Older devices — including iPhone 14 and 15 (non-Pro) — cannot run it.',
+  },
+  {
+    q: 'How is this maker different from Genmoji?',
+    a: 'Genmoji generates emoji-style images from a text prompt with AI, and results live inside Apple’s ecosystem. This maker lets you hand-pick every part (head, eyes, mouth, details) and exports transparent PNG/SVG files that work everywhere — Discord, Slack, WhatsApp, documents, anything.',
+  },
+  {
+    q: 'Can Genmoji be used as real emojis outside iMessage?',
+    a: 'Genmoji are technically stickers/images. In non-Apple apps they send as images, and on Android they arrive as pictures rather than inline emojis. Downloadable PNGs from a web maker behave the same way — with the advantage that you control the file and can upload it as a custom emoji where platforms allow.',
+  },
+]
+
+const schema = graph(
+  organization(),
+  article({
+    path,
+    headline: 'Genmoji Online: What Works on the Web, Android and Windows',
+    description,
+    datePublished: '2026-07-29',
+  }),
+  webApplication({
+    path,
+    name: 'Web Emoji Maker (Genmoji Alternative)',
+    description: 'Browser-based custom emoji maker that works on any device — a practical alternative to Apple’s Genmoji.',
+  }),
+  faqPage(path, faqItems),
+  breadcrumb([{ name: 'Home', path: '/' }, { name: 'Genmoji Online', path }]),
+)
+---
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <main class="page container">
+    <section class="hero">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › Genmoji Online</nav>
+      <h1>Genmoji Online: The Web Alternative for Every Other Device</h1>
+      <p class="lede">
+        Apple's Genmoji only runs on recent Apple hardware. If you're on Android, Windows, or an
+        older iPhone, here's what Genmoji actually requires — and a free maker that works right now
+        in your browser.
+      </p>
+    </section>
+
+    <section class="prose prose-page">
+      <h2>What is Genmoji?</h2>
+      <p>
+        Genmoji is Apple's AI emoji generator, introduced with Apple Intelligence in iOS 18.2.
+        You describe an emoji — “a capybara DJ”, “crying cowboy frog” — and it generates an
+        emoji-style image you can send in Messages, use as a sticker, or add to photos. In iOS 26,
+        Apple extended it with Genmoji Mixes for combining existing emojis.
+      </p>
+      <h2>The catch: strict device requirements</h2>
+      <div class="spec-table-wrap card">
+        <table class="spec">
+          <thead><tr><th>Device</th><th>Genmoji support</th></tr></thead>
+          <tbody>
+            <tr><td>iPhone 15 Pro / 16 / 17 series</td><td>✅ With iOS 18.2+ and Apple Intelligence on</td></tr>
+            <tr><td>iPhone 15 (non-Pro), 14 and older</td><td>❌ Not supported</td></tr>
+            <tr><td>iPad / Mac with M1 or later</td><td>✅ With iPadOS 18.2+ / macOS 15.2+</td></tr>
+            <tr><td>Android phones</td><td>❌ No Genmoji app exists</td></tr>
+            <tr><td>Windows / Linux / Chromebook</td><td>❌ No web version exists</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <p>
+          <strong>On an unsupported device?</strong> The maker below runs in any browser, needs no
+          account, and exports transparent PNG/SVG files you can use as stickers or custom emojis
+          anywhere — including platforms Genmoji can't reach.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <p class="eyebrow">Works everywhere</p>
+        <h2>Make a custom emoji in your browser instead</h2>
+      </div>
+      <EmojiMaker client:visible sizes={[640, 512, 128]} filePrefix="custom-emoji" />
+    </section>
+
+    <section class="prose prose-page">
+      <h2>Already have Genmoji? Make it better</h2>
+      <p>
+        If your device does support Genmoji, the quality of your results depends almost entirely on
+        the prompt. We collected <a href="/genmoji-prompts/">120+ Genmoji prompts and ideas</a> —
+        funny, cute, seasonal and mashup prompts that reliably produce good results, plus fixes for
+        the common “Genmoji not showing up” problems.
+      </p>
+    </section>
+
+    <Faq items={faqItems} />
+
+    <section class="related">
+      <div class="section-head">
+        <p class="eyebrow">Keep creating</p>
+        <h2>Related tools and guides</h2>
+      </div>
+      <ul>
+        <li><a href="/genmoji-prompts/"><b>Genmoji Prompts &amp; Ideas</b><span>120+ prompts that actually generate well.</span></a></li>
+        <li><a href="/emoji-combiner/"><b>Emoji Combiner</b><span>Mix two emojis in the browser — closest thing to Genmoji Mixes on any device.</span></a></li>
+        <li><a href="/emoji-kitchen/"><b>Emoji Kitchen Guide</b><span>Google's take on emoji mashups, and where it works.</span></a></li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>

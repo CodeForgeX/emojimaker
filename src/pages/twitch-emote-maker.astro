@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Faq from '../components/Faq.astro'
+import EmojiMaker from '../components/islands/EmojiMaker'
+import { graph, organization, webApplication, faqPage, breadcrumb, howTo } from '../lib/schema'
+
+const path = '/twitch-emote-maker/'
+const title = 'Twitch Emote Maker — Free 112, 56 & 28px Emote Creator'
+const description =
+  'Design Twitch emotes online and download all three required sizes (112×112, 56×56, 28×28) in one click. Free emote maker with tips to keep emotes readable at 28px.'
+
+const uploadSteps = [
+  { name: 'Design a bold, simple emote', text: 'Big shapes and strong expressions survive Twitch’s tiny chat size. Preview your design and ask: does it still read at 28 pixels?' },
+  { name: 'Download all three sizes', text: 'Click “All sizes” to export 112×112, 56×56 and 28×28 transparent PNGs in one go — the exact trio Twitch asks for.' },
+  { name: 'Upload in your Creator Dashboard', text: 'Go to Creator Dashboard → Viewer Rewards → Emotes, choose a slot (follower or sub tier), upload the three files and set the emote code.' },
+]
+
+const faqItems = [
+  {
+    q: 'What sizes do Twitch emotes need to be?',
+    a: 'Twitch requires three square sizes per emote: 112×112, 56×56 and 28×28 pixels, each a PNG under 1MB (transparent background recommended). The “All sizes” button exports the complete trio at once.',
+  },
+  {
+    q: 'How do I make my Twitch emotes look clear and not blurry?',
+    a: 'Design for the smallest size first: bold outlines, one clear focal point, minimal detail, high contrast. Avoid thin lines and small text — they vanish at 28×28. Exporting each size from the vector source (as this tool does) keeps edges crisp instead of letting Twitch downscale a single large file.',
+  },
+  {
+    q: 'Who can upload custom emotes on Twitch?',
+    a: 'Affiliates and Partners can upload sub emotes (slots grow with sub tiers), and qualifying channels get follower emote slots. Uploads go through Creator Dashboard → Viewer Rewards → Emotes and pass a quick review.',
+  },
+  {
+    q: 'Is this emote maker really free?',
+    a: 'Yes — free, no sign-up, no watermark, and the exported emotes are yours to use commercially. Many emote makers charge per emote; this one runs entirely in your browser.',
+  },
+  {
+    q: 'Can I make animated Twitch emotes?',
+    a: 'This tool exports static PNGs (plus SVG source). Twitch animated emotes are GIFs with the same three sizes — you can animate your exported design in any GIF editor.',
+  },
+]
+
+const schema = graph(
+  organization(),
+  webApplication({
+    path,
+    name: 'Twitch Emote Maker',
+    description,
+    features: ['One-click export of 112×112, 56×56 and 28×28', 'Transparent PNGs under 1MB', 'SVG source export', 'Free, no sign-up'],
+  }),
+  howTo({
+    path,
+    name: 'How to make and upload a Twitch emote',
+    description: 'Design an emote, export the three required sizes, and upload them in the Creator Dashboard.',
+    steps: uploadSteps,
+  }),
+  faqPage(path, faqItems),
+  breadcrumb([{ name: 'Home', path: '/' }, { name: 'Twitch Emote Maker', path }]),
+)
+---
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <main class="page container">
+    <section class="hero">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › Twitch Emote Maker</nav>
+      <h1>Twitch Emote Maker: All Three Sizes in One Click</h1>
+      <p class="lede">
+        Design an emote once and download the exact trio Twitch requires — 112×112, 56×56 and
+        28×28 transparent PNGs. Free, in your browser.
+      </p>
+      <ul class="hero-badges" aria-label="Highlights">
+        <li>112 + 56 + 28 px export</li>
+        <li>Transparent PNG</li>
+        <li>SVG source included</li>
+        <li>Free forever</li>
+      </ul>
+    </section>
+
+    <EmojiMaker client:load sizes={[112, 56, 28]} filePrefix="twitch-emote" allSizesButton />
+
+    <section>
+      <div class="section-head">
+        <p class="eyebrow">Workflow</p>
+        <h2>From idea to uploaded emote</h2>
+      </div>
+      <ol class="steps">
+        {uploadSteps.map((s) => (<li><b>{s.name}</b><span>{s.text}</span></li>))}
+      </ol>
+    </section>
+
+    <section class="prose prose-page">
+      <h2>Making emotes that stay readable at 28px</h2>
+      <ul>
+        <li><strong>One idea per emote.</strong> A single exaggerated expression beats a busy scene.</li>
+        <li><strong>Thick lines, big eyes, bold mouth.</strong> Faces are what chat actually parses at a glance.</li>
+        <li><strong>High contrast against both themes.</strong> Twitch chat can be light or dark — transparent backgrounds with strong outlines work in both.</li>
+        <li><strong>Skip small text.</strong> Words under ~6 characters barely survive at 56px and die at 28px.</li>
+        <li><strong>Export from vector.</strong> Each size here is rendered from the source rather than downscaled, so edges stay sharp.</li>
+      </ul>
+      <p>
+        Want mashup-style emotes (like a heart-eyed fire)? Build one with the
+        <a href="/emoji-combiner/">emoji combiner</a> and export it for chat. And the same design can
+        double as a <a href="/discord-emoji-maker/">Discord emoji</a> for your community server.
+      </p>
+    </section>
+
+    <Faq items={faqItems} />
+
+    <section class="related">
+      <div class="section-head">
+        <p class="eyebrow">Keep creating</p>
+        <h2>More free emoji tools</h2>
+      </div>
+      <ul>
+        <li><a href="/discord-emoji-maker/"><b>Discord Emoji Maker</b><span>128×128 export for your community server.</span></a></li>
+        <li><a href="/slack-emoji-maker/"><b>Slack Emoji Maker</b><span>Slack-ready 128×128 under 128KB.</span></a></li>
+        <li><a href="/"><b>Emoji Maker</b><span>The full maker with every part and export size.</span></a></li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Faq from '../../components/Faq.astro'
+import { graph, organization, article, howTo, faqPage, breadcrumb } from '../../lib/schema'
+
+const path = '/guides/how-to-make-custom-emojis/'
+const title = 'How to Make Custom Emojis on Any Device (2026 Guide)'
+const description =
+  'Step-by-step ways to make your own emoji: free online tools, Genmoji on iPhone, Emoji Kitchen on Android, plus how to add custom emojis to Discord, Slack and Teams.'
+
+const onlineSteps = [
+  { name: 'Open a browser-based emoji maker', text: 'Go to the free EmojiMaker tool — it runs on any device with a browser, no account or install.' },
+  { name: 'Compose your emoji from parts', text: 'Pick a head, then eyes, eyebrows, mouth and details. Use Randomize to explore 200,000+ combinations quickly.' },
+  { name: 'Export PNG or SVG', text: 'Download a transparent PNG (640/512/128 px) for chats and custom emoji uploads, or the SVG if you want to edit it further.' },
+  { name: 'Upload where you need it', text: 'Add the PNG to Discord, Slack or Teams as a custom emoji, or send it as a sticker in WhatsApp and Telegram.' },
+]
+
+const faqItems = [
+  {
+    q: 'Can you make your own emoji?',
+    a: 'Yes — several ways: free web makers (works on every device), Apple’s Genmoji on supported iPhones, Gboard’s Emoji Kitchen mashups on Android, and platform tools for Discord, Slack and Teams custom emojis. The right choice depends on your device and where you want to use the emoji.',
+  },
+  {
+    q: 'Is there a free way to make custom emojis without an app?',
+    a: 'Yes — browser-based makers like this site’s <a href="/">Emoji Maker</a> are free, need no sign-up and export transparent PNG/SVG files. Everything runs locally, so nothing is uploaded.',
+  },
+  {
+    q: 'How do I make an emoji of myself?',
+    a: 'For a cartoon avatar of yourself: Apple’s Memoji (iPhone), Samsung AR Emoji, or Bitmoji. Genmoji can also generate emojis of people from your photo library. Parts-based makers create original characters rather than likenesses.',
+  },
+  {
+    q: 'Can custom emojis be used everywhere?',
+    a: 'Custom emojis are images, so they work anywhere images do: as uploads in Discord/Slack/Teams, stickers in messengers, or inline pictures. They can’t replace Unicode emojis inside plain text — that set is fixed by the Unicode Consortium.',
+  },
+]
+
+const schema = graph(
+  organization(),
+  article({
+    path,
+    headline: 'How to Make Custom Emojis on Any Device',
+    description,
+    datePublished: '2026-07-29',
+  }),
+  howTo({
+    path,
+    name: 'How to make a custom emoji online (free)',
+    description: 'Create and export a custom emoji with a free browser-based maker.',
+    steps: onlineSteps,
+  }),
+  faqPage(path, faqItems.map(({ q, a }) => ({ q, a: a.replace(/<[^>]+>/g, '') }))),
+  breadcrumb([
+    { name: 'Home', path: '/' },
+    { name: 'Guides', path: '/guides/how-to-make-custom-emojis/' },
+    { name: 'How to Make Custom Emojis', path },
+  ]),
+)
+---
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <main class="page container">
+    <section class="hero">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › Guides › How to Make Custom Emojis</nav>
+      <h1>How to Make Custom Emojis on Any Device</h1>
+      <p class="lede">
+        Every practical way to create your own emoji in 2026 — online tools, Genmoji, Emoji Kitchen —
+        and how to get your creation into Discord, Slack and Teams.
+      </p>
+    </section>
+
+    <section class="prose prose-page">
+      <h2 id="online">Method 1: Free online emoji maker (every device)</h2>
+      <p>The fastest route, and the only one that works on literally everything — Android, iPhone, Windows, Mac, Chromebook:</p>
+      <ol class="steps">
+        {onlineSteps.map((s) => (<li><b>{s.name}</b><span>{s.text}</span></li>))}
+      </ol>
+      <p>
+        → Start with the <a href="/">free Emoji Maker</a>, mash two emojis with the
+        <a href="/emoji-combiner/">Emoji Combiner</a>, or grab ready-made
+        <a href="/emoji-combinations/">emoji combinations</a>.
+      </p>
+
+      <h2 id="iphone">Method 2: Genmoji on iPhone (AI)</h2>
+      <p>
+        On an iPhone 15 Pro or newer with iOS 18.2+, open the emoji keyboard, tap the Genmoji button,
+        and describe what you want ("capybara DJ"). Apple Intelligence generates an emoji-style image
+        you can send as a sticker. Requirements, limitations and alternatives:
+        <a href="/genmoji-online/">Genmoji online guide</a>. Prompt ideas:
+        <a href="/genmoji-prompts/">120+ Genmoji prompts</a>.
+      </p>
+
+      <h2 id="android">Method 3: Emoji Kitchen on Android</h2>
+      <p>
+        Gboard's Emoji Kitchen merges two standard emojis into a pre-drawn mashup sticker — tap an
+        emoji in Gboard and pick a suggested combo. It's limited to pairs Google has drawn; for any
+        pair, use a <a href="/emoji-combiner/">browser-based combiner</a>. Full walkthrough:
+        <a href="/emoji-kitchen/">Emoji Kitchen guide</a>.
+      </p>
+
+      <h2 id="platforms">Method 4: Custom emojis for Discord, Slack and Teams</h2>
+      <ul>
+        <li><strong>Discord:</strong> Server Settings → Emoji → Upload (128×128 recommended, 256KB cap, needs Manage Expressions). Details: <a href="/discord-emoji-maker/">Discord emoji maker</a>.</li>
+        <li><strong>Slack:</strong> Workspace name → Customize Workspace → Emoji → Add Custom Emoji (resized to 128×128, 128KB cap). Details: <a href="/slack-emoji-maker/">Slack emoji maker</a>.</li>
+        <li><strong>Microsoft Teams:</strong> Admins can enable custom emojis org-wide (Teams admin center → Messaging settings); users then upload via the emoji picker's + button.</li>
+        <li><strong>Twitch:</strong> Affiliates/Partners upload emotes in three sizes — 112, 56 and 28px. Export all three at once with the <a href="/twitch-emote-maker/">Twitch emote maker</a>.</li>
+      </ul>
+
+      <h2 id="choose">Which method should you use?</h2>
+      <div class="spec-table-wrap card">
+        <table class="spec">
+          <thead><tr><th>You want…</th><th>Best method</th></tr></thead>
+          <tbody>
+            <tr><td>A custom emoji on any device, free</td><td>Online maker (this site)</td></tr>
+            <tr><td>AI-generated emoji from a text prompt</td><td>Genmoji (recent Apple devices only)</td></tr>
+            <tr><td>Two emojis mashed into one</td><td>Emoji Kitchen (Gboard) or the browser combiner</td></tr>
+            <tr><td>An emoji that looks like you</td><td>Memoji / AR Emoji / Bitmoji</td></tr>
+            <tr><td>Server reaction emojis</td><td>Make a PNG, upload to Discord/Slack/Teams</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <Faq items={faqItems} />
+
+    <section class="related">
+      <div class="section-head">
+        <p class="eyebrow">Start creating</p>
+        <h2>Tools mentioned in this guide</h2>
+      </div>
+      <ul>
+        <li><a href="/"><b>Emoji Maker</b><span>Build a custom emoji from 100+ parts, export PNG/SVG.</span></a></li>
+        <li><a href="/emoji-combiner/"><b>Emoji Combiner</b><span>Merge any two emojis into one image.</span></a></li>
+        <li><a href="/twitch-emote-maker/"><b>Twitch Emote Maker</b><span>All three Twitch sizes in one click.</span></a></li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>

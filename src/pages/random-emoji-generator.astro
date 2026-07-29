@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Faq from '../components/Faq.astro'
+import RandomEmoji from '../components/islands/RandomEmoji'
+import { graph, organization, webApplication, faqPage, breadcrumb } from '../lib/schema'
+
+const path = '/random-emoji-generator/'
+const title = 'Random Emoji Generator — Roll Random Emojis to Copy'
+const description =
+  'Generate random emojis instantly: pick how many, hit generate, then copy with one click. Free random emoji generator for games, challenges and prompts.'
+
+const faqItems = [
+  {
+    q: 'How does the random emoji generator work?',
+    a: 'Pick how many emojis you want (1–20), optionally narrow the category, and press Generate. Each roll draws uniformly at random from a pool of 250+ popular emojis. Click any result to copy it, or copy the whole set at once.',
+  },
+  {
+    q: 'What can I use random emojis for?',
+    a: 'Popular uses: drawing or story challenges (“draw whatever 3 emojis you roll”), icebreaker games, picking teams or prizes like a spinner wheel, random reaction picks, writing prompts, and shuffling fresh emojis for bios and usernames.',
+  },
+  {
+    q: 'Can I generate just one random emoji?',
+    a: 'Yes — set the count to 1 for a single random emoji, like a dice roll. Set it to 3 for the classic “3 random emojis” challenge format.',
+  },
+  {
+    q: 'Is it free and private?',
+    a: 'Fully free, no sign-up. The randomness is generated locally in your browser; nothing is sent to a server.',
+  },
+]
+
+const schema = graph(
+  organization(),
+  webApplication({
+    path,
+    name: 'Random Emoji Generator',
+    description,
+    features: [
+      'Roll 1–20 random emojis at once',
+      'Category filters (smileys, animals, food, objects, hearts)',
+      'One-click copy for single emojis or the whole set',
+      'Free, no sign-up',
+    ],
+  }),
+  faqPage(path, faqItems),
+  breadcrumb([{ name: 'Home', path: '/' }, { name: 'Random Emoji Generator', path }]),
+)
+---
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <main class="page container">
+    <section class="hero">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › Random Emoji Generator</nav>
+      <h1>Random Emoji Generator</h1>
+      <p class="lede">
+        Roll 1–20 random emojis and copy them with a click — perfect for drawing challenges,
+        games, prompts and “3 random emojis” picks.
+      </p>
+    </section>
+
+    <RandomEmoji client:load />
+
+    <section class="prose prose-page">
+      <h2>Ideas for your random rolls</h2>
+      <ul>
+        <li><strong>Draw-the-roll challenge:</strong> generate 3 emojis and sketch a scene that includes all of them.</li>
+        <li><strong>Story dice:</strong> roll 5 emojis and improvise a story connecting them in order.</li>
+        <li><strong>Random reaction roulette:</strong> reply to a friend using only your next roll.</li>
+        <li><strong>Username spice:</strong> roll until an emoji fits your bio — then grab matching <a href="/emoji-combinations/">emoji combinations</a>.</li>
+        <li><strong>Custom emoji inspiration:</strong> roll a pair, then <a href="/emoji-combiner/">combine them into one image</a> or rebuild the vibe from parts in the <a href="/">Emoji Maker</a>.</li>
+      </ul>
+    </section>
+
+    <Faq items={faqItems} />
+
+    <section class="related">
+      <div class="section-head">
+        <p class="eyebrow">Keep creating</p>
+        <h2>More free emoji tools</h2>
+      </div>
+      <ul>
+        <li><a href="/"><b>Emoji Maker</b><span>Design a custom emoji from 100+ parts — the randomizer works there too.</span></a></li>
+        <li><a href="/emoji-combiner/"><b>Emoji Combiner</b><span>Merge any two emojis into one downloadable PNG.</span></a></li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+
+const title = 'Page Not Found — EmojiMaker'
+const description = 'That page doesn’t exist. Try the free emoji maker, combiner or random generator instead.'
+---
+<BaseLayout title={title} description={description} path="/404/" noindex>
+  <main class="page container">
+    <section class="hero">
+      <h1>404 — this page wandered off 🫠</h1>
+      <p class="lede">The page you're looking for doesn't exist (or moved). These do:</p>
+    </section>
+    <section class="related">
+      <ul>
+        <li><a href="/"><b>Emoji Maker</b><span>Create a custom emoji from 100+ parts.</span></a></li>
+        <li><a href="/emoji-combiner/"><b>Emoji Combiner</b><span>Merge two emojis into one.</span></a></li>
+        <li><a href="/random-emoji-generator/"><b>Random Emoji Generator</b><span>Roll and copy random emojis.</span></a></li>
+        <li><a href="/emoji-combinations/"><b>Emoji Combinations</b><span>Copy-paste combos for bios.</span></a></li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Faq from '../components/Faq.astro'
+import { graph, organization, article, faqPage, breadcrumb } from '../lib/schema'
+
+const path = '/genmoji-prompts/'
+const title = '120+ Genmoji Prompts and Ideas (Funny, Cute & Creative)'
+const description =
+  'Copy-paste Genmoji prompt ideas that work: funny, cute, animal, work, seasonal and mashup prompts, plus tips for writing prompts Apple Intelligence gets right.'
+
+const promptSections: { heading: string; prompts: string[] }[] = [
+  {
+    heading: 'Funny Genmoji prompts',
+    prompts: [
+      'crying cowboy frog', 'capybara DJ with headphones', 'skull drinking iced coffee', 'potato doing yoga',
+      'screaming cat in a business suit', 'toast doing a backflip', 'sloth riding a rocket', 'nervous banana sweating',
+      'duck with a knife (but cute)', 'grandma lifting weights', 'pizza slice crying happy tears', 'T-rex trying to clap',
+      'raccoon eating spaghetti', 'existential crisis smiley', 'dog wearing three pairs of sunglasses', 'angry marshmallow on fire',
+      'penguin slipping on ice dramatically', 'hamster screaming into a tiny microphone', 'avocado proposing to toast', 'cat judging you over glasses',
+    ],
+  },
+  {
+    heading: 'Cute Genmoji prompts',
+    prompts: [
+      'baby axolotl blowing a kiss', 'kitten in a strawberry hat', 'blushing boba tea', 'tiny ghost holding a heart',
+      'sleepy red panda with a blanket', 'bunny with flower crown', 'smiling cloud hugging the sun', 'baby penguin in rain boots',
+      'happy dumpling waving', 'otter holding hands with another otter', 'puppy with heart-shaped nose', 'chick hatching with sparkles',
+      'seal clapping with joy', 'kitten sleeping in a teacup', 'smiling star wearing a bow',
+    ],
+  },
+  {
+    heading: 'Animal mashups',
+    prompts: [
+      'half cat half dragon', 'unicorn pug', 'owl bear hybrid', 'shark with butterfly wings',
+      'llama mermaid', 'hedgehog dressed as a bee', 'frog prince with tiny crown', 'octopus wearing eight sneakers',
+      'lion with rainbow mane', 'turtle with a disco ball shell', 'fox with angel wings', 'dinosaur kitten',
+    ],
+  },
+  {
+    heading: 'Work & school',
+    prompts: [
+      'laptop on fire (fine face)', 'coffee cup with heart eyes', 'brain lifting dumbbells', 'calendar screaming',
+      'pencil running a marathon', 'zoom call zombie', 'graduation cap with sunglasses', 'stack of books doing a happy dance',
+      'robot drinking espresso', 'deadline monster (friendly)', 'thumbs up wearing a tie', 'lightbulb having an idea about itself',
+    ],
+  },
+  {
+    heading: 'Seasonal & holidays',
+    prompts: [
+      'pumpkin drinking pumpkin spice latte', 'ghost wearing a witch hat', 'snowman sunbathing', 'gingerbread man flexing',
+      'Christmas tree with heart ornaments', 'turkey in a party hat', 'fireworks smiley face', 'beach ball with sunglasses',
+      'autumn leaf waving goodbye', 'Easter egg doing a barrel roll', 'candy cane sword fight', 'New Year baby with confetti',
+    ],
+  },
+  {
+    heading: 'Feelings, but extra',
+    prompts: [
+      'happy tears waterfall face', 'heart made of tiny hearts', 'smiley melting into a puddle (relaxed)', 'face with spiral hypno eyes',
+      'grinning face with too much coffee energy', 'shy face hiding behind leaves', 'proud face with a tiny trophy', 'zen face meditating on a cloud',
+      'face screaming in seven languages', 'love-struck face orbited by hearts',
+    ],
+  },
+]
+
+const faqItems = [
+  {
+    q: 'How do I write a good Genmoji prompt?',
+    a: 'Use the pattern subject + action + one twist: “capybara DJ with headphones” beats “funny capybara”. Keep it under ~8 words, pick one clear subject, and add a single visual detail (hat, expression, prop). Stacking too many ideas confuses the generator.',
+  },
+  {
+    q: 'Why is Genmoji not generating my prompt?',
+    a: 'Common causes: Apple Intelligence still downloading (Settings → Apple Intelligence & Siri), an unsupported device, or a prompt touching restricted content (real people’s likeness without permission, violence, brands). Rephrase with a softer twist — “duck with a knife (but cute)” works where aggressive phrasing won’t.',
+  },
+  {
+    q: 'Can I make Genmoji of a real person?',
+    a: 'Yes, of people in your Photos library who you’ve named — Apple generates a stylized emoji likeness from their photos. It only works for people you have photos of, and you choose the person during creation.',
+  },
+  {
+    q: 'What if my device doesn’t support Genmoji?',
+    a: 'Genmoji needs an iPhone 15 Pro or newer (or M1+ iPad/Mac). On any other device you can build custom emojis in the browser with our free <a href="/">emoji maker</a>, or mix two emojis with the <a href="/emoji-combiner/">emoji combiner</a>.',
+  },
+]
+
+const schema = graph(
+  organization(),
+  article({
+    path,
+    headline: '120+ Genmoji Prompts and Ideas That Actually Work',
+    description,
+    datePublished: '2026-07-29',
+  }),
+  faqPage(path, faqItems.map(({ q, a }) => ({ q, a: a.replace(/<[^>]+>/g, '') }))),
+  breadcrumb([{ name: 'Home', path: '/' }, { name: 'Genmoji Prompts', path }]),
+)
+---
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <main class="page container">
+    <section class="hero">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › Genmoji Prompts</nav>
+      <h1>120+ Genmoji Prompts and Ideas</h1>
+      <p class="lede">
+        Tested prompt patterns for Apple's Genmoji — funny, cute, seasonal and mashup ideas you can
+        type straight into the emoji keyboard.
+      </p>
+    </section>
+
+    <section class="prose prose-page">
+      <h2>The formula for prompts that generate well</h2>
+      <p>
+        <strong>Subject + action + one twist.</strong> Genmoji shines when the prompt is concrete and
+        short: one subject, one thing it's doing, one visual detail. “Sloth riding a rocket” lands;
+        “a funny cool animal doing something crazy in space with lasers” doesn't. Steal freely from
+        the lists below.
+      </p>
+    </section>
+
+    {promptSections.map((sec) => (
+      <section class="prose prose-page">
+        <h2>{sec.heading}</h2>
+        <ul class="prompt-list">
+          {sec.prompts.map((p) => <li>{p}</li>)}
+        </ul>
+      </section>
+    ))}
+
+    <section class="prose prose-page">
+      <h2>No Genmoji on your device?</h2>
+      <p>
+        Genmoji needs recent Apple hardware — see <a href="/genmoji-online/">which devices support it
+        and what to use instead</a>. On Android, Windows or older iPhones, you can build a custom
+        emoji by hand with the free <a href="/">emoji maker</a>, or mash two emojis together with the
+        <a href="/emoji-combiner/">combiner</a>.
+      </p>
+    </section>
+
+    <Faq items={faqItems} />
+
+    <section class="related">
+      <div class="section-head">
+        <p class="eyebrow">Keep creating</p>
+        <h2>Related tools and guides</h2>
+      </div>
+      <ul>
+        <li><a href="/genmoji-online/"><b>Genmoji Online</b><span>Device requirements and the web-based alternative.</span></a></li>
+        <li><a href="/emoji-combinations/"><b>Emoji Combinations</b><span>Copy-paste combos for bios and captions.</span></a></li>
+        <li><a href="/"><b>Emoji Maker</b><span>Hand-build a custom emoji with 100+ parts.</span></a></li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>

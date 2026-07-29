@@ -1,0 +1,123 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Faq from '../components/Faq.astro'
+import EmojiMaker from '../components/islands/EmojiMaker'
+import { graph, organization, webApplication, faqPage, breadcrumb, howTo } from '../lib/schema'
+
+const path = '/discord-emoji-maker/'
+const title = 'Discord Emoji Maker — Make Custom Discord Emojis Free'
+const description =
+  'Create custom Discord emojis and server emotes online: export 128×128 PNGs sized for Discord, follow the quick upload steps, no Nitro needed. Free and no sign-up.'
+
+const uploadSteps = [
+  { name: 'Design and export at 128×128', text: 'Build your emoji in the maker above and download the 128×128 PNG — Discord’s recommended emoji size, well under the 256KB cap.' },
+  { name: 'Open your server’s emoji settings', text: 'On a server where you have the “Manage Expressions” permission, open Server Settings → Emoji.' },
+  { name: 'Upload and name your emote', text: 'Click “Upload Emoji”, pick the PNG and set a name. Members can now use it via :name: — and Nitro users can use it across servers.' },
+]
+
+const faqItems = [
+  {
+    q: 'What size are Discord emojis?',
+    a: 'Discord recommends 128×128 pixels for custom emojis (they display much smaller in chat) and caps uploads at 256KB. The maker’s 128×128 transparent PNG export matches this exactly.',
+  },
+  {
+    q: 'How many custom emojis can a Discord server have?',
+    a: 'Every server gets 50 static and 50 animated emoji slots. Server Boost levels raise the cap — up to 250 static emojis at Level 3.',
+  },
+  {
+    q: 'Do I need Nitro to make or upload custom emojis?',
+    a: 'No. Making emojis (here) is free, and uploading them only requires the Manage Expressions permission on a server. Nitro is only needed to use one server’s custom emojis in other servers.',
+  },
+  {
+    q: 'Can I make animated Discord emojis here?',
+    a: 'This maker exports static PNG and SVG. For animated emotes, export your design and animate it in a GIF tool — or keep it static: most reaction emotes read best as crisp static images.',
+  },
+  {
+    q: 'Can I use the same emoji on Slack or Twitch?',
+    a: 'Yes — the artwork is yours. Export the right sizes from the <a href="/slack-emoji-maker/">Slack maker</a> (128×128) or the <a href="/twitch-emote-maker/">Twitch emote maker</a> (112/56/28) so each platform gets a native-quality file.',
+  },
+]
+
+const schema = graph(
+  organization(),
+  webApplication({
+    path,
+    name: 'Discord Emoji Maker',
+    description,
+    features: ['128×128 PNG export for Discord', 'Transparent background', 'No Nitro required', 'Free, no sign-up'],
+  }),
+  howTo({
+    path,
+    name: 'How to add a custom emoji to a Discord server',
+    description: 'Create a 128×128 emoji and upload it in Server Settings.',
+    steps: uploadSteps,
+  }),
+  faqPage(path, faqItems.map(({ q, a }) => ({ q, a: a.replace(/<[^>]+>/g, '') }))),
+  breadcrumb([{ name: 'Home', path: '/' }, { name: 'Discord Emoji Maker', path }]),
+)
+---
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <main class="page container">
+    <section class="hero">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › Discord Emoji Maker</nav>
+      <h1>Discord Emoji Maker: Custom Server Emojis, No Nitro Needed</h1>
+      <p class="lede">
+        Design custom Discord emojis in your browser and export Discord-ready 128×128 transparent
+        PNGs — free, unlimited, no sign-up.
+      </p>
+      <ul class="hero-badges" aria-label="Highlights">
+        <li>128×128 preset</li>
+        <li>Transparent PNG</li>
+        <li>No Nitro required</li>
+        <li>Free forever</li>
+      </ul>
+    </section>
+
+    <EmojiMaker client:load sizes={[128, 640]} filePrefix="discord-emoji" />
+
+    <section>
+      <div class="section-head">
+        <p class="eyebrow">Upload guide</p>
+        <h2>How to add your emoji to a Discord server</h2>
+      </div>
+      <ol class="steps">
+        {uploadSteps.map((s) => (<li><b>{s.name}</b><span>{s.text}</span></li>))}
+      </ol>
+    </section>
+
+    <section class="prose prose-page">
+      <h2>Discord emoji specs at a glance</h2>
+      <div class="spec-table-wrap card">
+        <table class="spec">
+          <thead><tr><th>Spec</th><th>Discord’s rule</th><th>This maker</th></tr></thead>
+          <tbody>
+            <tr><td>Recommended size</td><td>128×128 px</td><td>Exact 128×128 export</td></tr>
+            <tr><td>Max file size</td><td>256KB</td><td>Typically 5–30KB</td></tr>
+            <tr><td>Formats</td><td>PNG, JPG, GIF (animated)</td><td>PNG + SVG source</td></tr>
+            <tr><td>Free slots per server</td><td>50 static / 50 animated</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Discord also added a built-in emoji editor on desktop, but it's tied to the app and a server.
+        A browser maker works everywhere — including on mobile and for emojis you want to reuse on
+        <a href="/slack-emoji-maker/">Slack</a> or as stickers. For mashup-style emotes, try the
+        <a href="/emoji-combiner/">emoji combiner</a>.
+      </p>
+    </section>
+
+    <Faq items={faqItems} />
+
+    <section class="related">
+      <div class="section-head">
+        <p class="eyebrow">Keep creating</p>
+        <h2>More free emoji tools</h2>
+      </div>
+      <ul>
+        <li><a href="/twitch-emote-maker/"><b>Twitch Emote Maker</b><span>Export all three Twitch sizes (112/56/28) in one click.</span></a></li>
+        <li><a href="/emoji-combiner/"><b>Emoji Combiner</b><span>Merge two emojis into one custom emote image.</span></a></li>
+        <li><a href="/random-emoji-generator/"><b>Random Emoji Generator</b><span>Roll random emojis for games and inspiration.</span></a></li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>

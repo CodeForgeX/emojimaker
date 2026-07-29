@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Faq from '../components/Faq.astro'
+import EmojiCombiner from '../components/islands/EmojiCombiner'
+import { graph, organization, webApplication, faqPage, breadcrumb } from '../lib/schema'
+
+const path = '/emoji-combiner/'
+const title = 'Emoji Combiner — Merge Two Emojis Into One (Free Online)'
+const description =
+  'Combine emojis online: overlay or mix any two emojis into one image and download it as a PNG. Free emoji combiner and mixer — works on iPhone, Android and desktop.'
+
+const faqItems = [
+  {
+    q: 'Can you combine two emojis?',
+    a: 'Yes. Pick any two emojis above, choose Overlay or Side-by-side, adjust size and position, and download the merged result as a PNG. It works with every standard emoji, not just a fixed list of pairs.',
+  },
+  {
+    q: 'How is this different from Google’s Emoji Kitchen?',
+    a: 'Emoji Kitchen serves hand-drawn mashups for specific pairs inside Gboard and Google Search. This combiner works in any browser — including on iPhone and desktop — lets you mix any pair, and gives you a downloadable PNG. Read more in our <a href="/emoji-kitchen/">Emoji Kitchen guide</a>.',
+  },
+  {
+    q: 'How do I combine emojis on iPhone?',
+    a: 'iPhones only mix emojis natively through Genmoji on devices that support Apple Intelligence (iOS 18.2 or later). On any iPhone, you can use this page in Safari instead — no app or iOS version required.',
+  },
+  {
+    q: 'Can I use the combined emoji as a sticker or custom emoji?',
+    a: 'Yes. The downloaded PNG can be uploaded as a custom emoji or sticker in Discord, Slack, Telegram, WhatsApp and most other chat apps. For platform-specific sizes, try the <a href="/slack-emoji-maker/">Slack</a> or <a href="/discord-emoji-maker/">Discord</a> makers.',
+  },
+  {
+    q: 'Is the emoji combiner free?',
+    a: 'Completely free, with no sign-up and no watermark. The compositing happens locally in your browser, so your creations are never uploaded anywhere.',
+  },
+]
+
+const schema = graph(
+  organization(),
+  webApplication({
+    path,
+    name: 'Emoji Combiner',
+    description,
+    features: [
+      'Merge any two emojis into one image',
+      'Overlay and side-by-side layouts',
+      'Adjustable size, position and opacity',
+      'PNG download at 640×640',
+      'Works on iPhone, Android and desktop browsers',
+    ],
+  }),
+  faqPage(path, faqItems.map(({ q, a }) => ({ q, a: a.replace(/<[^>]+>/g, '') }))),
+  breadcrumb([{ name: 'Home', path: '/' }, { name: 'Emoji Combiner', path }]),
+)
+---
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <main class="page container">
+    <section class="hero">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › Emoji Combiner</nav>
+      <h1>Emoji Combiner: Mix Two Emojis Into One</h1>
+      <p class="lede">
+        Put two emojis together — 🐱 + 🔥, 💀 + ☕, anything — and download the mashup as a PNG.
+        No app, no Gboard, no sign-up.
+      </p>
+    </section>
+
+    <EmojiCombiner client:load />
+
+    <section>
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2>Combine emojis in three steps</h2>
+      </div>
+      <ol class="steps">
+        <li><b>Choose your pair.</b><span>Tap the first slot and pick an emoji, then the second — or hit <em>Random pair</em> for instant chaos.</span></li>
+        <li><b>Arrange the mashup.</b><span>Overlay one emoji on the other and drag the sliders to move, scale and fade it, or switch to side-by-side.</span></li>
+        <li><b>Download the PNG.</b><span>Your combined emoji exports at 640×640 with a transparent background, ready for chats, memes and custom emoji uploads.</span></li>
+      </ol>
+    </section>
+
+    <section class="prose prose-page">
+      <h2>When to reach for the combiner</h2>
+      <p>
+        Combined emojis say things single emojis can't: a crying cat in the rain, a party avocado,
+        coffee-powered skull energy. People use emoji mashups as reaction images, Discord and Slack
+        custom emojis, story stickers and profile accents.
+      </p>
+      <p>
+        If you want a fully custom face instead — choosing the eyes, mouth and brows yourself —
+        use the <a href="/">Emoji Maker</a>. If you're after Google's official pre-drawn mashups,
+        here's <a href="/emoji-kitchen/">how Emoji Kitchen works and where it's available</a>.
+      </p>
+    </section>
+
+    <Faq items={faqItems} />
+
+    <section class="related">
+      <div class="section-head">
+        <p class="eyebrow">Keep creating</p>
+        <h2>More free emoji tools</h2>
+      </div>
+      <ul>
+        <li><a href="/"><b>Emoji Maker</b><span>Build a custom emoji from 100+ Fluent-style parts, with SVG export.</span></a></li>
+        <li><a href="/emoji-kitchen/"><b>Emoji Kitchen Guide</b><span>What it is, how to get it, and what to use when you don't have Gboard.</span></a></li>
+        <li><a href="/emoji-combinations/"><b>Emoji Combinations</b><span>Copy-paste aesthetic, cute and funny emoji combos.</span></a></li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>

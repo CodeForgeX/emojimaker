@@ -1,19 +1,4 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
 
-# Sitemap location
-Sitemap: https://emojimaker.cc/sitemap.xml
-
-# Allow AI crawlers for training
-User-agent: GPTBot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-# Crawl-delay for polite crawling
-Crawl-delay: 1
+Sitemap: https://emojimaker.cc/sitemap-index.xml
