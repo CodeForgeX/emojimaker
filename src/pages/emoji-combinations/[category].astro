@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Faq from '../../components/Faq.astro'
+import { COMBO_CATEGORIES } from '../../data/combinations'
+import { graph, organization, article, faqPage, breadcrumb } from '../../lib/schema'
+
+export function getStaticPaths() {
+  return COMBO_CATEGORIES.map((cat) => ({ params: { category: cat.slug }, props: { cat } }))
+}
+
+const { cat } = Astro.props
+const path = `/emoji-combinations/${cat.slug}/`
+const total = cat.sections.reduce((n, s) => n + s.combos.length, 0)
+
+const sharedFaq = {
+  q: 'How do I copy these combos?',
+  a: 'Tap or click any combination — it copies to your clipboard instantly. Then paste it into your bio, caption, username or chat. They’re standard emojis, so they work in every app.',
+}
+const faqItems = [...cat.faq, sharedFaq]
+
+const schema = graph(
+  organization(),
+  article({
+    path,
+    headline: cat.title,
+    description: cat.description,
+    datePublished: '2026-08-02',
+  }),
+  faqPage(path, faqItems),
+  breadcrumb([
+    { name: 'Home', path: '/' },
+    { name: 'Emoji Combinations', path: '/emoji-combinations/' },
+    { name: cat.name, path },
+  ]),
+)
+
+const others = COMBO_CATEGORIES.filter((c) => c.slug !== cat.slug)
+---
+<BaseLayout title={cat.title} description={cat.description} path={path} schema={schema}>
+  <main class="page container">
+    <section class="hero">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> › <a href="/emoji-combinations/">Emoji Combinations</a> › {cat.name}
+      </nav>
+      <h1>{cat.h1}</h1>
+      <p class="lede">{cat.lede}</p>
+      <ul class="hero-badges" aria-label="Highlights">
+        <li>{total} combos</li>
+        <li>Tap to copy</li>
+        <li>Works everywhere</li>
+        <li>Updated for 2026</li>
+      </ul>
+    </section>
+
+    {cat.sections.map((sec) => (
+      <section>
+        <div class="section-head">
+          <h2>{sec.heading}</h2>
+          <p class="lede" style="font-size:0.98rem">{sec.note}</p>
+        </div>
+        <div class="combo-grid">
+          {sec.combos.map((c) => (
+            <button class="combo js-copy" data-copy={c} title="Click to copy">{c}</button>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <div class="callout">
+      <p>
+        <strong>Make it one image:</strong> merge any pair with the
+        <a href="/emoji-combiner/">emoji combiner</a>, or find Google's official mashup of it in the
+        <a href="/emoji-kitchen/">Emoji Kitchen browser</a>.
+      </p>
+    </div>
+
+    <Faq items={faqItems} />
+
+    <section class="related">
+      <div class="section-head">
+        <p class="eyebrow">More vibes</p>
+        <h2>Other emoji combination collections</h2>
+      </div>
+      <ul>
+        {others.map((o) => (
+          <li>
+            <a href={`/emoji-combinations/${o.slug}/`}>
+              <b>{o.name} emoji combinations</b>
+              <span>{o.sections[0].combos.slice(0, 3).join(' · ')} …</span>
+            </a>
+          </li>
+        ))}
+        <li><a href="/emoji-combinations/"><b>All combinations</b><span>The full collection, organized by vibe.</span></a></li>
+      </ul>
+    </section>
+  </main>
+
+  <script is:inline>
+    document.querySelectorAll('.js-copy').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(btn.dataset.copy)
+          btn.classList.add('copied')
+          const prev = btn.textContent
+          btn.textContent = 'Copied!'
+          setTimeout(() => { btn.textContent = prev; btn.classList.remove('copied') }, 900)
+        } catch {}
+      })
+    })
+  </script>
+</BaseLayout>

@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Faq from '../components/Faq.astro'
+import { graph, organization, article, faqPage, breadcrumb, howTo } from '../lib/schema'
+
+const path = '/genmoji-not-working/'
+const title = 'Genmoji Not Working? Fix Not Showing Up & Stuck Downloads'
+const description =
+  'Fix Genmoji not showing up on iPhone: check device and iOS requirements, unstick the “downloading support for Genmoji” message, and restore the missing button.'
+
+const fixSteps = [
+  { name: 'Confirm your device supports it', text: 'Genmoji needs Apple Intelligence: iPhone 15 Pro/Pro Max or any iPhone 16/17, running iOS 18.2 or later. iPhone 15 (non-Pro), 14 and older can’t run it — no setting changes that.' },
+  { name: 'Turn on Apple Intelligence', text: 'Settings → Apple Intelligence & Siri → enable Apple Intelligence. If you see a waitlist or “preparing” state, leave the phone on Wi-Fi and charging; the on-device models download in the background.' },
+  { name: 'Check language and region', text: 'Apple Intelligence must support your device language. If it’s unavailable, set Siri and device language to a supported one (English works everywhere it’s offered), then restart.' },
+  { name: 'Free up storage', text: 'The Apple Intelligence models need roughly 7GB free. Under 10GB free, downloads often stall silently — clear space, then check Settings → Apple Intelligence & Siri again.' },
+  { name: 'Restart and retry', text: 'After any change: restart the iPhone, open Messages, tap the emoji keyboard and look for the Genmoji button at the top of the emoji panel.' },
+]
+
+const faqItems = [
+  {
+    q: 'Why is Genmoji not showing up on my iPhone?',
+    a: 'The three usual causes: your device doesn’t support Apple Intelligence (needs iPhone 15 Pro or newer), Apple Intelligence isn’t enabled in Settings → Apple Intelligence & Siri, or the on-device models are still downloading. Work through the checklist above in that order.',
+  },
+  {
+    q: 'What does “downloading support for Genmoji” mean and how long does it take?',
+    a: 'It means the on-device AI models that generate Genmoji are still downloading. On fast Wi-Fi it typically takes 15–60 minutes, but it only proceeds while the phone is on Wi-Fi, charging or well-charged, and has enough free storage (~7GB). If it’s stuck for hours: plug in, connect to Wi-Fi, free up storage and restart.',
+  },
+  {
+    q: 'Why is Genmoji greyed out or missing in Messages?',
+    a: 'If Apple Intelligence is on but the Genmoji button is missing from the emoji keyboard, check Screen Time restrictions (Settings → Screen Time → Content & Privacy → Intelligence features), disable Low Power Mode, and make sure you’re in a supported region and language. A restart after changing settings is often required.',
+  },
+  {
+    q: 'Why does Genmoji refuse to generate my prompt?',
+    a: 'Genmoji blocks prompts involving real people’s likeness (except people in your Photos you’ve tagged), violence, brands and adult content. Rephrase with a softer twist — see our Genmoji prompt guide for patterns that reliably work.',
+  },
+  {
+    q: 'How do I delete a Genmoji I created?',
+    a: 'Open the emoji keyboard in Messages, touch and hold the Genmoji in the stickers/frequently-used area, then choose Remove. Genmoji you delete disappear from the keyboard but not from old messages where you already sent them.',
+  },
+  {
+    q: 'My iPhone can’t run Genmoji — what’s the alternative?',
+    a: 'On unsupported iPhones, Android or desktop you can make custom emojis in the browser: build one from parts with the free emoji maker, or mix two emojis with the combiner — no Apple Intelligence required.',
+  },
+]
+
+const schema = graph(
+  organization(),
+  article({
+    path,
+    headline: 'Genmoji Not Working: Every Fix for Missing Buttons and Stuck Downloads',
+    description,
+    datePublished: '2026-08-02',
+  }),
+  howTo({
+    path,
+    name: 'How to fix Genmoji not showing up',
+    description: 'Checklist to get Genmoji working on a supported iPhone.',
+    steps: fixSteps,
+  }),
+  faqPage(path, faqItems),
+  breadcrumb([
+    { name: 'Home', path: '/' },
+    { name: 'Genmoji Online', path: '/genmoji-online/' },
+    { name: 'Genmoji Not Working', path },
+  ]),
+)
+---
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <main class="page container">
+    <section class="hero">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> › <a href="/genmoji-online/">Genmoji</a> › Not Working
+      </nav>
+      <h1>Genmoji Not Working? Here's Every Fix</h1>
+      <p class="lede">
+        Genmoji button missing, stuck on “downloading support for Genmoji”, or refusing to generate?
+        Work through this checklist — it covers every known cause.
+      </p>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <p class="eyebrow">The 5-step checklist</p>
+        <h2>Fix Genmoji not showing up</h2>
+      </div>
+      <ol class="steps">
+        {fixSteps.map((s) => (<li><b>{s.name}</b><span>{s.text}</span></li>))}
+      </ol>
+    </section>
+
+    <section class="prose prose-page">
+      <h2>“Downloading support for Genmoji” stuck?</h2>
+      <p>
+        This message means the on-device Apple Intelligence models are still coming down. The
+        download <strong>only progresses under specific conditions</strong>, which is why it can look
+        frozen for hours:
+      </p>
+      <ul>
+        <li><strong>Wi-Fi required</strong> — it won't download over cellular.</li>
+        <li><strong>Power</strong> — plug the phone in, or keep the battery comfortably charged; Low Power Mode pauses it.</li>
+        <li><strong>Storage</strong> — the models need ~7GB; below ~10GB free, downloads stall silently.</li>
+        <li><strong>Patience</strong> — 15–60 minutes on fast Wi-Fi is normal; overnight on the charger almost always completes it.</li>
+      </ul>
+      <p>
+        Still stuck after all four? Restart the phone, then toggle Apple Intelligence off and on in
+        Settings → Apple Intelligence &amp; Siri to re-trigger the download.
+      </p>
+
+      <h2>Quick reference: which iPhones can run Genmoji</h2>
+      <div class="spec-table-wrap card">
+        <table class="spec">
+          <thead><tr><th>Device</th><th>Genmoji</th></tr></thead>
+          <tbody>
+            <tr><td>iPhone 17 / 16 series (all)</td><td>✅ iOS 18.2+</td></tr>
+            <tr><td>iPhone 15 Pro / Pro Max</td><td>✅ iOS 18.2+</td></tr>
+            <tr><td>iPhone 15 / 15 Plus</td><td>❌ Not supported</td></tr>
+            <tr><td>iPhone 14 and older</td><td>❌ Not supported</td></tr>
+            <tr><td>iPad / Mac with M1+</td><td>✅ iPadOS/macOS 18.2/15.2+</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Unsupported device? You can still make custom emojis in the browser — the free
+        <a href="/">emoji maker</a> and <a href="/emoji-combiner/">emoji combiner</a> run on
+        anything, and the <a href="/genmoji-online/">Genmoji online guide</a> compares every
+        alternative.
+      </p>
+    </section>
+
+    <Faq items={faqItems} />
+
+    <section class="related">
+      <div class="section-head">
+        <p class="eyebrow">Once it works</p>
+        <h2>Get more out of Genmoji</h2>
+      </div>
+      <ul>
+        <li><a href="/genmoji-prompts/"><b>120+ Genmoji Prompts</b><span>Funny, cute and seasonal prompts that generate well.</span></a></li>
+        <li><a href="/genmoji-online/"><b>Genmoji Online Guide</b><span>Requirements, limitations and web alternatives.</span></a></li>
+        <li><a href="/emoji-kitchen/"><b>Emoji Kitchen Browser</b><span>147,000 official Google mashups, on any device.</span></a></li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>

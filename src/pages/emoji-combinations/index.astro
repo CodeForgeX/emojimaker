@@ -1,54 +1,13 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
-import Faq from '../components/Faq.astro'
-import { graph, organization, article, faqPage, breadcrumb } from '../lib/schema'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Faq from '../../components/Faq.astro'
+import { COMBO_CATEGORIES } from '../../data/combinations'
+import { graph, organization, article, faqPage, breadcrumb } from '../../lib/schema'
 
 const path = '/emoji-combinations/'
 const title = 'Emoji Combinations to Copy: Aesthetic, Cute & Funny Combos'
 const description =
   'Tap to copy emoji combinations: aesthetic, cute, funny, Christmas and Halloween combos for bios, captions and usernames — plus a tool to merge any two emojis.'
-
-const sections: { heading: string; intro: string; combos: string[] }[] = [
-  {
-    heading: 'Aesthetic emoji combinations',
-    intro: 'Soft, coordinated palettes for bios, usernames and pinned comments.',
-    combos: [
-      '🌷🍓🎀', '🕯️📜🤎', '🌊🐚🤍', '🍇🔮💜', '🌙✨🖤', '🍦🎐🩵', '🥛🧸🤍', '🌾🍂🧡',
-      '🫧🩵🐬', '🍵🌿📗', '🌸🎟️🩰', '☁️🕊️🤍', '🍒📀❤️', '🪞🫀🥀', '🧷⛓️🖤', '🍑🧡📙',
-    ],
-  },
-  {
-    heading: 'Cute emoji combinations',
-    intro: 'Maximum softness — for compliments, comfort messages and wholesome captions.',
-    combos: [
-      '🐰🥕💗', '🐻🍯🧡', '🐥🌻☀️', '🐨🌿💚', '😽💤🌙', '🦔🍄🍂', '🐳💦🩵', '🐹🌰🤎',
-      '🍓🥞🤍', '🧁🎀💕', '🐧❄️💙', '🦊🍁🧡', '🐢🌱💚', '🐣🐰🌷',
-    ],
-  },
-  {
-    heading: 'Funny emoji combinations',
-    intro: 'Chaotic combos that tell a whole story in three characters.',
-    combos: [
-      '💀☕🧍', '🤡🎪🎉', '👁️👄👁️', '🧍‍♂️📸🚨', '🐸🍵🫖', '😤💅✨', '🏃💨🚪', '🤠🔫🐴',
-      '🧠❌📉', '😭✋🚫', '🗿🍷🌊', '🦶🔪😱', '🐔🧠❓', '💃🕺🔥',
-    ],
-  },
-  {
-    heading: 'Christmas emoji combinations',
-    intro: 'Holiday combos for December bios, group chat names and cards.',
-    combos: [
-      '🎄✨🎁', '☃️❄️💙', '🦌🔔🎅', '🍪🥛🎄', '🧦🔥🍫', '🌟🎄🤍', '🛷❄️🌨️', '🕯️🎶📖',
-      '🎁💝🎀', '⛄🧣☕',
-    ],
-  },
-  {
-    heading: 'Halloween emoji combinations',
-    intro: 'Spooky-season combos for October usernames and captions.',
-    combos: [
-      '🎃👻🕸️', '🦇🌕🖤', '🧙‍♀️🔮✨', '🍬🍭👻', '💀🕯️📖', '🧛🩸🌹', '🕷️🕸️🎃', '⚰️🥀🖤',
-    ],
-  },
-]
 
 const faqItems = [
   {
@@ -57,11 +16,11 @@ const faqItems = [
   },
   {
     q: 'How do I copy an emoji combination?',
-    a: 'Tap or click any combo on this page — it copies to your clipboard automatically. Then paste it anywhere: Instagram bio, TikTok caption, Discord status, WhatsApp name.',
+    a: 'Tap or click any combo on these pages — it copies to your clipboard automatically. Then paste it anywhere: Instagram bio, TikTok caption, Discord status, WhatsApp name.',
   },
   {
     q: 'Can I make my own emoji combination into a single image?',
-    a: 'Yes — with the free <a href="/emoji-combiner/">emoji combiner</a> you can overlay two emojis into one PNG, which works as a sticker or custom emoji. For a fully custom face, try the <a href="/">emoji maker</a>.',
+    a: 'Yes — with the free emoji combiner you can overlay two emojis into one PNG, which works as a sticker or custom emoji. For a fully custom face, try the emoji maker.',
   },
   {
     q: 'Do emoji combos look the same on every phone?',
@@ -76,8 +35,9 @@ const schema = graph(
     headline: 'Emoji Combinations to Copy: Aesthetic, Cute, Funny and Seasonal Combos',
     description,
     datePublished: '2026-07-29',
+    dateModified: '2026-08-02',
   }),
-  faqPage(path, faqItems.map(({ q, a }) => ({ q, a: a.replace(/<[^>]+>/g, '') }))),
+  faqPage(path, faqItems),
   breadcrumb([{ name: 'Home', path: '/' }, { name: 'Emoji Combinations', path }]),
 )
 ---
@@ -87,21 +47,37 @@ const schema = graph(
       <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › Emoji Combinations</nav>
       <h1>Emoji Combinations to Copy &amp; Paste</h1>
       <p class="lede">
-        Aesthetic, cute, funny and seasonal emoji combos — tap any combination to copy it, then
-        paste it into your bio, caption or username.
+        Aesthetic, cute, funny and seasonal emoji combos — organized by vibe, each with dozens of
+        tap-to-copy combinations for your bio, caption or username.
       </p>
     </section>
 
-    {sections.map((sec) => (
+    <section class="related">
+      <div class="section-head">
+        <h2>Browse by vibe</h2>
+      </div>
+      <ul>
+        {COMBO_CATEGORIES.map((cat) => (
+          <li>
+            <a href={`/emoji-combinations/${cat.slug}/`}>
+              <b>{cat.name} emoji combinations</b>
+              <span>{cat.sections.reduce((n, s) => n + s.combos.length, 0)} combos · e.g. {cat.sections[0].combos.slice(0, 3).join(' · ')}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    {COMBO_CATEGORIES.map((cat) => (
       <section>
         <div class="section-head">
-          <h2>{sec.heading}</h2>
-          <p class="lede" style="font-size:0.98rem">{sec.intro}</p>
+          <h2><a href={`/emoji-combinations/${cat.slug}/`}>{cat.name}</a> — quick picks</h2>
         </div>
         <div class="combo-grid">
-          {sec.combos.map((c) => (
+          {cat.sections[0].combos.slice(0, 8).map((c) => (
             <button class="combo js-copy" data-copy={c} title="Click to copy">{c}</button>
           ))}
+          <a class="combo" href={`/emoji-combinations/${cat.slug}/`} style="text-decoration:none;font-size:0.9rem;display:inline-flex;align-items:center">All {cat.name.toLowerCase()} →</a>
         </div>
       </section>
     ))}
@@ -109,8 +85,8 @@ const schema = graph(
     <div class="callout">
       <p>
         <strong>Want one image instead of three characters?</strong> Merge any two emojis into a
-        single transparent PNG with the free <a href="/emoji-combiner/">emoji combiner</a> — great
-        for Discord and Slack custom emojis.
+        single transparent PNG with the free <a href="/emoji-combiner/">emoji combiner</a>, or browse
+        Google's official mashups in the <a href="/emoji-kitchen/">Emoji Kitchen browser</a>.
       </p>
     </div>
 

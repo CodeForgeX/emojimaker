@@ -10,14 +10,20 @@ import { SITE } from '../lib/site'
  * included automatically. The @astrojs/sitemap index remains available
  * at /sitemap-index.xml as a secondary.
  */
+import { COMBO_CATEGORIES } from '../data/combinations'
+
 const pageFiles = import.meta.glob('./**/*.astro')
 
 const EXCLUDE = new Set(['404'])
 
-const routes = Object.keys(pageFiles)
+const staticRoutes = Object.keys(pageFiles)
   .map((file) => file.replace(/^\.\//, '').replace(/\.astro$/, '').replace(/\/?index$/, ''))
-  .filter((route) => !EXCLUDE.has(route))
-  .sort((a, b) => a.length - b.length)
+  .filter((route) => !EXCLUDE.has(route) && !route.includes('['))
+
+// dynamic routes expanded from their data sources
+const dynamicRoutes = COMBO_CATEGORIES.map((c) => `emoji-combinations/${c.slug}`)
+
+const routes = [...staticRoutes, ...dynamicRoutes].sort((a, b) => a.length - b.length)
 
 export const GET: APIRoute = () => {
   const urls = routes
