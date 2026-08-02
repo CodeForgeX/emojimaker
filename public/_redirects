@@ -1,2 +1,1 @@
-# Legacy sitemap path -> Astro sitemap index
-/sitemap.xml /sitemap-index.xml 301
+# (sitemap.xml is now a real generated file — no redirects needed)

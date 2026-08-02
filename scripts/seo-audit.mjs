@@ -120,12 +120,11 @@ for (const file of pages) {
   }
 }
 
-// sitemap checks
-const smIndex = join(DIST, 'sitemap-index.xml')
-if (!existsSync(smIndex)) add('ERROR', '/', 'sitemap-index.xml missing')
+// sitemap checks (flat /sitemap.xml is the canonical one; index kept as secondary)
+const smFlat = join(DIST, 'sitemap.xml')
+if (!existsSync(smFlat)) add('ERROR', '/', 'sitemap.xml missing')
 else {
-  const sm0 = join(DIST, 'sitemap-0.xml')
-  const sm = existsSync(sm0) ? readFileSync(sm0, 'utf8') : ''
+  const sm = readFileSync(smFlat, 'utf8')
   const urls = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])
   for (const file of pages) {
     const rel = '/' + relative(DIST, file).replace(/index\.html$/, '').replace(/\\/g, '/')
@@ -139,7 +138,7 @@ else {
 
 // robots.txt
 const robots = existsSync(join(DIST, 'robots.txt')) ? readFileSync(join(DIST, 'robots.txt'), 'utf8') : ''
-if (!robots.includes('sitemap-index.xml')) add('ERROR', '/', 'robots.txt missing sitemap reference')
+if (!/Sitemap:\s*https:\/\/emojimaker\.cc\/sitemap(-index)?\.xml/.test(robots)) add('ERROR', '/', 'robots.txt missing sitemap reference')
 
 // report
 const errors = findings.filter((f) => f.level === 'ERROR')
