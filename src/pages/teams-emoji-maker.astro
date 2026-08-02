@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Faq from '../components/Faq.astro'
+import EmojiMaker from '../components/islands/EmojiMaker'
+import { graph, organization, webApplication, faqPage, breadcrumb, howTo } from '../lib/schema'
+
+const path = '/teams-emoji-maker/'
+const title = 'Teams Emoji Maker — Custom Emojis for Microsoft Teams'
+const description =
+  'Create custom Microsoft Teams emojis in your browser: export a square transparent PNG, enable the admin setting, then upload via the Teams emoji picker. Free.'
+
+const uploadSteps = [
+  { name: 'Design and export your emoji', text: 'Build your emoji in the maker above and download the 512×512 PNG — sharp enough for Teams, with a transparent background.' },
+  { name: 'Make sure custom emojis are enabled', text: 'A Teams admin turns the feature on once: Teams admin center → Messaging settings → “Custom emojis and reactions”. Most organizations already have it enabled by default.' },
+  { name: 'Upload it in any chat', text: 'Open the emoji picker in a chat or channel, switch to the custom emoji tab, click the “+” button, upload the PNG and give it a name. It becomes available to your whole organization.' },
+]
+
+const faqItems = [
+  {
+    q: 'Can you add custom emojis to Microsoft Teams?',
+    a: 'Yes. Since mid-2024 Teams supports custom emojis natively: open the emoji picker in any chat, go to the custom tab and click “+” to upload an image. Uploaded emojis are shared with everyone in your organization and work in messages and reactions.',
+  },
+  {
+    q: 'Why can’t I upload custom emojis in Teams?',
+    a: 'The feature is controlled by admins. If the “+” upload button is missing, ask IT to enable “Custom emojis and reactions” in the Teams admin center under Messaging settings. Admins can also restrict who is allowed to upload or delete emojis.',
+  },
+  {
+    q: 'What image size works best for Teams emojis?',
+    a: 'Teams accepts common image formats (PNG, JPG, GIF) and resizes them to emoji size. A square, transparent PNG around 512×512 or 128×128 gives the cleanest result — exactly what this maker exports. Keep the design bold: Teams renders emojis small in messages and reactions.',
+  },
+  {
+    q: 'Do animated custom emojis work in Teams?',
+    a: 'Yes, Teams accepts GIFs as custom emojis. This maker exports static PNG/SVG; for most reaction-style emojis a crisp static image stays readable at small sizes.',
+  },
+  {
+    q: 'Is this Teams emoji maker free?',
+    a: 'Completely free — no sign-up, no watermark, unlimited exports. Everything runs in your browser, so nothing is uploaded to a server.',
+  },
+]
+
+const schema = graph(
+  organization(),
+  webApplication({
+    path,
+    name: 'Teams Emoji Maker',
+    description,
+    features: ['Square transparent PNG export (512/128)', 'SVG source export', 'Free, no sign-up', 'Works in any browser'],
+  }),
+  howTo({
+    path,
+    name: 'How to add a custom emoji to Microsoft Teams',
+    description: 'Create an emoji image and upload it through the Teams emoji picker.',
+    steps: uploadSteps,
+  }),
+  faqPage(path, faqItems),
+  breadcrumb([{ name: 'Home', path: '/' }, { name: 'Teams Emoji Maker', path }]),
+)
+---
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <main class="page container">
+    <section class="hero">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › Teams Emoji Maker</nav>
+      <h1>Teams Emoji Maker: Custom Emojis for Microsoft Teams</h1>
+      <p class="lede">
+        Design a custom emoji for Teams chats and reactions — export a clean transparent PNG and
+        upload it straight from the emoji picker.
+      </p>
+      <ul class="hero-badges" aria-label="Highlights">
+        <li>512×512 &amp; 128×128 presets</li>
+        <li>Transparent PNG</li>
+        <li>Org-wide once uploaded</li>
+        <li>Free forever</li>
+      </ul>
+    </section>
+
+    <EmojiMaker client:load sizes={[512, 128, 640]} filePrefix="teams-emoji" />
+
+    <section>
+      <div class="section-head">
+        <p class="eyebrow">Upload guide</p>
+        <h2>How to add your emoji to Microsoft Teams</h2>
+      </div>
+      <ol class="steps">
+        {uploadSteps.map((s) => (<li><b>{s.name}</b><span>{s.text}</span></li>))}
+      </ol>
+    </section>
+
+    <section class="prose prose-page">
+      <h2>Teams custom emoji rules at a glance</h2>
+      <div class="spec-table-wrap card">
+        <table class="spec">
+          <thead><tr><th>Item</th><th>How Teams handles it</th><th>This maker</th></tr></thead>
+          <tbody>
+            <tr><td>Formats</td><td>PNG, JPG, GIF (animated)</td><td>PNG (transparent) + SVG source</td></tr>
+            <tr><td>Shape &amp; size</td><td>Resized to a small square</td><td>Exact square 512 or 128 px</td></tr>
+            <tr><td>Who can upload</td><td>Everyone, unless admins restrict it</td><td>—</td></tr>
+            <tr><td>Visibility</td><td>Entire organization</td><td>—</td></tr>
+            <tr><td>Admin switch</td><td>Admin center → Messaging settings → Custom emojis and reactions</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Reusing the same emoji across your tools? Export platform-exact sizes from the
+        <a href="/slack-emoji-maker/">Slack maker</a> (128×128, under 128KB) and the
+        <a href="/discord-emoji-maker/">Discord maker</a> (128×128) so every workspace gets a
+        native-quality file.
+      </p>
+    </section>
+
+    <Faq items={faqItems} />
+
+    <section class="related">
+      <div class="section-head">
+        <p class="eyebrow">Keep creating</p>
+        <h2>More free emoji tools</h2>
+      </div>
+      <ul>
+        <li><a href="/slack-emoji-maker/"><b>Slack Emoji Maker</b><span>Slack-ready 128×128 export under 128KB.</span></a></li>
+        <li><a href="/discord-emoji-maker/"><b>Discord Emoji Maker</b><span>Server emojis without Nitro.</span></a></li>
+        <li><a href="/emoji-combiner/"><b>Emoji Combiner</b><span>Merge two emojis into one reaction image.</span></a></li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>
