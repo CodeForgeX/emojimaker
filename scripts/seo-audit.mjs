@@ -78,6 +78,10 @@ for (const file of pages) {
   for (const [k, v] of [['property', 'og:title'], ['property', 'og:description'], ['property', 'og:image'], ['property', 'og:url'], ['name', 'twitter:card']]) {
     if (!metaContent(html, k, v)) add('ERROR', rel, `missing ${v}`)
   }
+  const ogImg = metaContent(html, 'property', 'og:image')
+  if (ogImg?.startsWith(SITE + '/og/') && !existsSync(join(DIST, ogImg.slice(SITE.length)))) {
+    add('ERROR', rel, `og:image file missing: ${ogImg}`)
+  }
 
   // JSON-LD validity + FAQ consistency
   const ldBlocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)]
