@@ -1,5 +1,6 @@
 import type { Component } from 'solid-js'
 import { createSignal, createEffect, For, Show } from 'solid-js'
+import { track } from '../../lib/track'
 import './islands.css'
 
 const SIZE = 640
@@ -95,6 +96,7 @@ const EmojiCombiner: Component = () => {
     const r = () => EMOJIS[Math.floor(Math.random() * EMOJIS.length)]
     setEmojiA(r())
     setEmojiB(r())
+    track('randomize', { tool: 'combiner' })
   }
 
   const download = () => {
@@ -106,6 +108,7 @@ const EmojiCombiner: Component = () => {
       link.download = `emoji-mashup-${SIZE}x${SIZE}.png`
       link.click()
       URL.revokeObjectURL(url)
+      track('export_png', { tool: 'combiner', mode: mode() })
     })
   }
 

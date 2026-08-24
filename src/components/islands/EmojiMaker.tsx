@@ -1,5 +1,6 @@
 import type { Component } from 'solid-js'
 import { createSignal, createEffect, onMount, For, Show } from 'solid-js'
+import { track } from '../../lib/track'
 import './islands.css'
 
 type SvgImageModule = typeof import('*.svg')
@@ -146,7 +147,9 @@ const EmojiMaker: Component<EmojiMakerProps> = (props) => {
     ctx.imageSmoothingQuality = 'high'
     ctx.drawImage(canvas, 0, 0, size, size)
     target.toBlob((blob) => {
-      if (blob) downloadBlob(blob, `${filePrefix()}-${size}x${size}.png`)
+      if (!blob) return
+      downloadBlob(blob, `${filePrefix()}-${size}x${size}.png`)
+      track('export_png', { tool: 'maker', size, file_prefix: filePrefix() })
     })
   }
 
@@ -188,7 +191,7 @@ const EmojiMaker: Component<EmojiMakerProps> = (props) => {
           ></canvas>
         </div>
         <div class="maker-actions">
-          <button class="btn btn-primary" onClick={getRandom} aria-label="Generate a random emoji">
+          <button class="btn btn-primary" onClick={() => { getRandom(); track('randomize', { tool: 'maker' }) }} aria-label="Generate a random emoji">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.8-1.1 2-1.7 3.3-1.7H22" /><path d="m18 2 4 4-4 4" /><path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2" /><path d="M22 18h-5.9c-1.3 0-2.5-.6-3.3-1.7l-.5-.8" /><path d="m18 14 4 4-4 4" /></svg>
             Randomize
           </button>
@@ -209,7 +212,7 @@ const EmojiMaker: Component<EmojiMakerProps> = (props) => {
           <button class="btn" onClick={() => exportPng(sizes()[exportSize()])} aria-label={`Download emoji as ${sizes()[exportSize()]} pixel PNG`}>
             PNG
           </button>
-          <button class="btn" onClick={() => toSVGBlob().then((b) => downloadBlob(b, `${filePrefix()}.svg`))} aria-label="Download emoji as SVG vector">
+          <button class="btn" onClick={() => toSVGBlob().then((b) => { downloadBlob(b, `${filePrefix()}.svg`); track('export_svg', { tool: 'maker', file_prefix: filePrefix() }) })} aria-label="Download emoji as SVG vector">
             SVG
           </button>
           <Show when={props.allSizesButton && sizes().length > 1}>

@@ -110,6 +110,7 @@ const schema = graph(
       btn.addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(btn.dataset.copy)
+          window.gtag?.('event', 'copy', { tool: 'combinations', content_type: 'combo' })
           btn.classList.add('copied')
           const prev = btn.textContent
           btn.textContent = 'Copied!'

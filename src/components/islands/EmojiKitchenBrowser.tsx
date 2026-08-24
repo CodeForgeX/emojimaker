@@ -1,5 +1,6 @@
 import type { Component } from 'solid-js'
 import { createSignal, createMemo, onMount, For, Show } from 'solid-js'
+import { track } from '../../lib/track'
 import './islands.css'
 
 /**
@@ -142,6 +143,7 @@ const EmojiKitchenBrowser: Component = () => {
       if (!blob) return
       await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })])
       setCopied(true)
+      track('copy', { tool: 'kitchen', content_type: 'sticker' })
       setTimeout(() => setCopied(false), 1200)
     } catch {
       const c = combo()
@@ -159,6 +161,7 @@ const EmojiKitchenBrowser: Component = () => {
       link.download = 'emoji-kitchen-combo.png'
       link.click()
       URL.revokeObjectURL(url)
+      track('export_png', { tool: 'kitchen' })
     } catch {
       const c = combo()
       if (c) window.open(c.url, '_blank', 'noopener')
@@ -189,7 +192,7 @@ const EmojiKitchenBrowser: Component = () => {
             onClick={() => setActiveSlot('b')}
             aria-label={`Second emoji${b() !== null ? `, currently ${cpToChar(data()!.e[b()!])}` : ''}. Click, then choose from the grid.`}
           >{b() !== null ? cpToChar(data()!.e[b()!]) : '?'}</button>
-          <button class="btn" onClick={random}>Random combo</button>
+          <button class="btn" onClick={() => { random(); track('randomize', { tool: 'kitchen' }) }}>Random combo</button>
           <button class="btn" onClick={copyImage}>{copied() ? 'Copied!' : 'Copy sticker'}</button>
           <button class="btn btn-primary" onClick={download}>Download PNG</button>
         </div>

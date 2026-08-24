@@ -1,5 +1,6 @@
 import type { Component } from 'solid-js'
 import { createSignal, For, onMount } from 'solid-js'
+import { track } from '../../lib/track'
 import './islands.css'
 
 const POOL: Record<string, string[]> = {
@@ -36,12 +37,14 @@ const RandomEmoji: Component = () => {
   const copyOne = async (emoji: string, i: number) => {
     await navigator.clipboard.writeText(emoji)
     setCopiedIdx(i)
+    track('copy', { tool: 'random', content_type: 'emoji' })
     setTimeout(() => setCopiedIdx(null), 900)
   }
 
   const copyAll = async () => {
     await navigator.clipboard.writeText(result().join(''))
     setCopiedAll(true)
+    track('copy', { tool: 'random', content_type: 'emoji_set', count: result().length })
     setTimeout(() => setCopiedAll(false), 1200)
   }
 
@@ -61,7 +64,7 @@ const RandomEmoji: Component = () => {
             <For each={Object.keys(POOL)}>{(c) => <option>{c}</option>}</For>
           </select>
         </label>
-        <button class="btn btn-primary" onClick={roll}>Generate</button>
+        <button class="btn btn-primary" onClick={() => { roll(); track('generate', { tool: 'random', count: count() }) }}>Generate</button>
         <button class="btn" onClick={copyAll}>{copiedAll() ? 'Copied!' : 'Copy all'}</button>
       </div>
       <div class="random-output" aria-live="polite" aria-label="Random emoji results">
