@@ -71,10 +71,15 @@ const gaEnabled = Boolean(gtagId) && gtagId !== 'XXX'
     )}
     {gaEnabled && (
       <script is:inline define:vars={{ gtagId }}>
+        // NB: Astro's define:vars wraps this in an IIFE, so a bare
+        // `function gtag(){}` would be IIFE-scoped and never reach window —
+        // page_view would still fire here, but islands calling window.gtag
+        // (export/copy events) would silently no-op. Assign window.gtag
+        // explicitly so it's a true global.
         window.dataLayer = window.dataLayer || []
-        function gtag(){dataLayer.push(arguments)}
-        gtag('js', new Date())
-        gtag('config', gtagId)
+        window.gtag = function(){ window.dataLayer.push(arguments) }
+        window.gtag('js', new Date())
+        window.gtag('config', gtagId)
       </script>
     )}
   </head>
