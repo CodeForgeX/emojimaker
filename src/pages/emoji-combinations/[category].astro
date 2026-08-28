@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Faq from '../../components/Faq.astro'
 import { COMBO_CATEGORIES } from '../../data/combinations'
-import { graph, organization, article, faqPage, breadcrumb } from '../../lib/schema'
+import { graph, organization, article, faqPage, breadcrumb, itemList } from '../../lib/schema'
 
 export function getStaticPaths() {
   return COMBO_CATEGORIES.map((cat) => ({ params: { category: cat.slug }, props: { cat } }))
@@ -10,7 +10,8 @@ export function getStaticPaths() {
 
 const { cat } = Astro.props
 const path = `/emoji-combinations/${cat.slug}/`
-const total = cat.sections.reduce((n, s) => n + s.combos.length, 0)
+const allCombos = cat.sections.flatMap((s) => s.combos)
+const total = allCombos.length
 
 const sharedFaq = {
   q: 'How do I copy these combos?',
@@ -27,6 +28,12 @@ const schema = graph(
     datePublished: '2026-08-02',
   }),
   faqPage(path, faqItems),
+  itemList({
+    path,
+    name: cat.h1,
+    description: cat.description,
+    items: allCombos.map((c) => ({ name: c.combo, description: c.meaning })),
+  }),
   breadcrumb([
     { name: 'Home', path: '/' },
     { name: 'Emoji Combinations', path: '/emoji-combinations/' },
@@ -58,13 +65,29 @@ const others = COMBO_CATEGORIES.filter((c) => c.slug !== cat.slug)
           <h2>{sec.heading}</h2>
           <p class="lede" style="font-size:0.98rem">{sec.note}</p>
         </div>
-        <div class="combo-grid">
+        <ul class="combo-list">
           {sec.combos.map((c) => (
-            <button class="combo js-copy" data-copy={c} title="Click to copy">{c}</button>
+            <li>
+              <button class="combo-item js-copy" data-copy={c.combo} title="Click to copy">
+                <span class="c">{c.combo}</span>
+                <span class="m">{c.meaning}</span>
+              </button>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
     ))}
+
+    {cat.body && (
+      <section class="prose prose-page">
+        {cat.body.map((b) => (
+          <>
+            <h2>{b.heading}</h2>
+            <p>{b.text}</p>
+          </>
+        ))}
+      </section>
+    )}
 
     <div class="callout">
       <p>
@@ -86,7 +109,7 @@ const others = COMBO_CATEGORIES.filter((c) => c.slug !== cat.slug)
           <li>
             <a href={`/emoji-combinations/${o.slug}/`}>
               <b>{o.name} emoji combinations</b>
-              <span>{o.sections[0].combos.slice(0, 3).join(' · ')} …</span>
+              <span>{o.sections[0].combos.slice(0, 3).map((c) => c.combo).join(' · ')} …</span>
             </a>
           </li>
         ))}
@@ -101,10 +124,12 @@ const others = COMBO_CATEGORIES.filter((c) => c.slug !== cat.slug)
         try {
           await navigator.clipboard.writeText(btn.dataset.copy)
           window.gtag?.('event', 'copy', { tool: 'combinations', content_type: 'combo' })
+          // Swap only the label so the emoji sequence stays visible while copying.
+          const label = btn.querySelector('.m') || btn
+          const prev = label.textContent
           btn.classList.add('copied')
-          const prev = btn.textContent
-          btn.textContent = 'Copied!'
-          setTimeout(() => { btn.textContent = prev; btn.classList.remove('copied') }, 900)
+          label.textContent = 'Copied!'
+          setTimeout(() => { label.textContent = prev; btn.classList.remove('copied') }, 900)
         } catch {}
       })
     })

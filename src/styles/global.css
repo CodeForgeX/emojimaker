@@ -186,6 +186,23 @@ table.spec td:first-child { font-weight: 600; white-space: nowrap; }
 .combo:hover { border-color: var(--accent); }
 .combo.copied { border-color: var(--good); }
 
+/* Labelled combo list: the emoji sequence plus what it reads as. */
+.combo-list {
+  display: grid; gap: 0.55rem; margin-top: 1rem; padding: 0; list-style: none;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+}
+.combo-item {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0.25rem;
+  width: 100%; text-align: left; font: inherit; cursor: pointer;
+  padding: 0.6rem 0.8rem; border: 1px solid var(--line);
+  border-radius: var(--radius-sm); background: var(--bg-card); color: var(--text);
+}
+.combo-item:hover { border-color: var(--accent); }
+.combo-item.copied { border-color: var(--good); }
+.combo-item .c { font-size: 1.2rem; line-height: 1.35; word-break: break-word; }
+.combo-item .m { font-size: 0.84rem; line-height: 1.4; color: var(--muted); }
+.combo-item.copied .m { color: var(--good); }
+
 /* ---------- Breadcrumbs ---------- */
 .crumbs { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.8rem; }
 .crumbs a { color: var(--muted); }

@@ -26,6 +26,7 @@ const PAGES = {
   'emoji-combinations-aesthetic': ['Aesthetic Emoji', 'Combinations', 4, 12, 10],
   'emoji-combinations-cute': ['Cute Emoji', 'Combinations', 1, 5, 5],
   'emoji-combinations-funny': ['Funny Emoji', 'Combinations', 3, 22, 20],
+  'emoji-combinations-cool': ['Cool Emoji', 'Combinations', 2, 18, 22],
   'emoji-combinations-christmas': ['Christmas Emoji', 'Combinations', 5, 16, 14],
   'emoji-combinations-halloween': ['Halloween Emoji', 'Combinations', 8, 9, 26],
   'guides-how-to-make-custom-emojis': ['How to Make Custom', 'Emojis on Any Device', 7, 2, 3],

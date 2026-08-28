@@ -79,6 +79,27 @@ export const howTo = (opts: {
   })),
 })
 
+/** A labelled list of items — used by the emoji-combination category pages. */
+export const itemList = (opts: {
+  path: string
+  name: string
+  description?: string
+  items: { name: string; description?: string }[]
+}): Dict => ({
+  '@type': 'ItemList',
+  '@id': absUrl(opts.path) + '#list',
+  name: opts.name,
+  description: opts.description,
+  numberOfItems: opts.items.length,
+  itemListOrder: 'https://schema.org/ItemListUnordered',
+  itemListElement: opts.items.map((it, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: it.name,
+    description: it.description,
+  })),
+})
+
 export const article = (opts: {
   path: string
   headline: string
