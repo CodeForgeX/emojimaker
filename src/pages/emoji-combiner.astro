@@ -89,6 +89,87 @@ const schema = graph(
         use the <a href="/">Emoji Maker</a>. If you're after Google's official pre-drawn mashups,
         here's <a href="/emoji-kitchen/">how Emoji Kitchen works and where it's available</a>.
       </p>
+
+      <h2>Overlay or side-by-side: which layout to pick</h2>
+      <p>
+        <strong>Overlay</strong> is the mashup mode. One emoji sits on top of the other, and the
+        size, position and opacity sliders decide how much of the base shows through. It works best
+        when the two emojis have different silhouettes — a face plus a small object (🐱 + 🎩,
+        💀 + ☕) reads instantly, because the object lands as an accessory rather than a collision.
+        Two round faces overlaid on each other usually turn to mush.
+      </p>
+      <p>
+        <strong>Side-by-side</strong> keeps both emojis whole and legible. Use it when the pairing
+        is the joke rather than the drawing — 🐟 next to 🚲, or two characters reacting to each
+        other. It also survives being shrunk to 28 pixels far better than an overlay does, which
+        matters for chat emoji.
+      </p>
+      <p>
+        Everything is composited in your browser on a canvas, then exported at 640×640 with a
+        transparent background. Nothing is uploaded, so the emoji you build never leaves your
+        device.
+      </p>
+
+      <h2>Upload sizes for each platform</h2>
+      <p>
+        The 640×640 PNG is deliberately larger than any chat platform needs, so you can downscale
+        without losing edges. These are the sizes and limits worth knowing before you upload:
+      </p>
+      <div class="spec-table-wrap card">
+        <table class="spec">
+          <thead><tr><th>Platform</th><th>Size</th><th>Limit</th></tr></thead>
+          <tbody>
+            <tr><td>Discord</td><td>128 × 128</td><td>256KB per emoji; 50 slots on a free server</td></tr>
+            <tr><td>Slack</td><td>128 × 128</td><td>128KB per emoji</td></tr>
+            <tr><td>Microsoft Teams</td><td>128 × 128</td><td>Custom emojis are set by the workspace admin</td></tr>
+            <tr><td>Twitch</td><td>112, 56 and 28</td><td>All three sizes required, 1MB each</td></tr>
+            <tr><td>Telegram / WhatsApp</td><td>512 × 512</td><td>Uploaded as stickers, not emojis</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        For emojis sized and named correctly on upload, the dedicated
+        <a href="/slack-emoji-maker/">Slack</a>, <a href="/discord-emoji-maker/">Discord</a>,
+        <a href="/teams-emoji-maker/">Teams</a> and
+        <a href="/twitch-emote-maker/">Twitch</a> makers export the right dimensions directly.
+      </p>
+
+      <h2>How this compares to Emoji Kitchen, Genmoji and emojimix</h2>
+      <p>
+        There are four ways to end up with a merged emoji, and they are good at different things:
+      </p>
+      <div class="spec-table-wrap card">
+        <table class="spec">
+          <thead><tr><th>Tool</th><th>Pairs available</th><th>Runs on</th><th>Output</th></tr></thead>
+          <tbody>
+            <tr><td>This combiner</td><td>Any two emojis</td><td>Any browser</td><td>Transparent PNG you keep</td></tr>
+            <tr><td>Emoji Kitchen</td><td>147,000 pre-drawn</td><td>Gboard, Google Search</td><td>Hand-drawn sticker</td></tr>
+            <tr><td>Genmoji</td><td>Generated from text</td><td>iPhone 15 Pro and newer</td><td>Apple sticker, on-device</td></tr>
+            <tr><td>emojimix</td><td>~50,000 pre-drawn</td><td>Any browser</td><td>Sticker image</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        The trade-off is coverage versus polish. Emoji Kitchen results look better than anything a
+        compositor can produce, because a designer drew each one — but only the pairs Google chose
+        exist, and the pair you want often is not among them. This combiner has no such list: every
+        emoji works with every other emoji, and you control the framing. Genmoji goes further still
+        by inventing new artwork, at the cost of needing recent Apple hardware — see
+        <a href="/how-to-use-genmoji/">how to use Genmoji</a> for whether your device qualifies.
+      </p>
+
+      <h2>Combining emojis on iPhone and Android</h2>
+      <p>
+        Neither platform merges emojis natively in the way people expect. On Android, Gboard's Emoji
+        Kitchen suggests mashups above the keyboard while you type, but only for supported pairs.
+        On iPhone there is no keyboard integration at all — Genmoji is the closest equivalent and it
+        requires an iPhone 15 Pro or newer running iOS 18.2 or later.
+      </p>
+      <p>
+        This page sidesteps both. It runs in Safari and Chrome on any phone, needs no install, and
+        gives you a file rather than a suggestion — which is the part that matters if you want to
+        upload the result as a custom emoji somewhere.
+      </p>
     </section>
 
     <Faq items={faqItems} />

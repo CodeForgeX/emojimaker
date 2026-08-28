@@ -1,0 +1,220 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Faq from '../components/Faq.astro'
+import { graph, organization, article, faqPage, breadcrumb, howTo } from '../lib/schema'
+
+const path = '/how-to-use-genmoji/'
+const title = 'How to Use Genmoji on iPhone (iOS 18 & 26 Guide)'
+const description =
+  'Turn Genmoji on, generate your first one, and check whether your iPhone supports it — plus what the iOS 26 update added and what to use if your device misses out.'
+
+const useSteps = [
+  {
+    name: 'Turn on Apple Intelligence',
+    text: 'Settings → Apple Intelligence & Siri → turn it on. Genmoji is part of Apple Intelligence, so nothing appears until this is enabled and the on-device models have downloaded.',
+  },
+  {
+    name: 'Open the emoji keyboard in Messages',
+    text: 'Start any conversation, tap the emoji or globe key, and look at the top of the emoji panel. On a supported device you get a Genmoji button next to the search field.',
+  },
+  {
+    name: 'Describe the emoji you want',
+    text: 'Type a plain description — “a corgi wearing sunglasses”, “an avocado lifting weights”. Short and concrete works better than long and abstract. Tap the arrow to generate.',
+  },
+  {
+    name: 'Swipe, pick and add it',
+    text: 'Apple returns several variations; swipe between them and tap Add on the one you want. It lands in your emoji keyboard under Recents and can be sent like any other emoji.',
+  },
+]
+
+const faqItems = [
+  {
+    q: 'How do you use Genmoji on iPhone?',
+    a: 'Open Messages, tap the emoji keyboard, tap the Genmoji button at the top of the panel, describe what you want in plain language, then swipe through the results and tap Add. It requires Apple Intelligence to be switched on first, under Settings → Apple Intelligence & Siri.',
+  },
+  {
+    q: 'What is Genmoji?',
+    a: 'Genmoji is Apple’s generative emoji feature, introduced in iOS 18.2. You describe an emoji in words and Apple Intelligence draws it in the standard emoji style on the device. The results are not real Unicode emoji — they are small images that send as stickers, which is why they arrive as pictures rather than inline characters on Android.',
+  },
+  {
+    q: 'Does the iPhone 14 support Genmoji?',
+    a: 'No. Genmoji needs Apple Intelligence, and the iPhone 14 and 14 Pro cannot run it — the hardware requirement starts at the iPhone 15 Pro. No iOS update will add it to the iPhone 14, because the limit is the chip rather than the software.',
+  },
+  {
+    q: 'Does the iPhone 15 support Genmoji?',
+    a: 'Only the Pro models. The iPhone 15 Pro and 15 Pro Max run Genmoji on iOS 18.2 or later; the standard iPhone 15 and 15 Plus do not, because they ship the older A16 chip without enough on-device capability for Apple Intelligence.',
+  },
+  {
+    q: 'How do I download Genmoji?',
+    a: 'There is nothing to download from the App Store — Genmoji is built into iOS. What downloads is the Apple Intelligence model set, which starts automatically once you enable Apple Intelligence in Settings. It needs Wi-Fi, roughly 7GB of free storage, and usually 15 to 60 minutes.',
+  },
+  {
+    q: 'Can I use Genmoji on Android or on the web?',
+    a: 'No. Genmoji only runs inside Apple Intelligence on supported Apple hardware, and there is no web version or Android app. To make custom emoji images on another device, use a browser-based maker instead — the guide to web alternatives covers the options.',
+  },
+]
+
+const schema = graph(
+  organization(),
+  article({
+    path,
+    headline: 'How to Use Genmoji on iPhone: Setup, Devices and iOS 26',
+    description,
+    datePublished: '2026-08-28',
+  }),
+  howTo({
+    path,
+    name: 'How to use Genmoji on iPhone',
+    description: 'Enable Apple Intelligence and generate a custom Genmoji from a text description.',
+    steps: useSteps,
+    totalTime: 'PT5M',
+  }),
+  faqPage(path, faqItems),
+  breadcrumb([
+    { name: 'Home', path: '/' },
+    { name: 'Genmoji', path: '/genmoji-online/' },
+    { name: 'How to Use Genmoji', path },
+  ]),
+)
+---
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <main class="page container">
+    <section class="hero">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> › <a href="/genmoji-online/">Genmoji</a> › How to Use
+      </nav>
+      <h1>How to Use Genmoji on iPhone</h1>
+      <p class="lede">
+        Genmoji turns a sentence into an emoji. Here is how to switch it on, generate your first
+        one, and find out in ten seconds whether your iPhone can run it at all.
+      </p>
+      <ul class="hero-badges" aria-label="Highlights">
+        <li>iOS 18.2 and later</li>
+        <li>iPhone 15 Pro and newer</li>
+        <li>Free, built into iOS</li>
+        <li>Updated for iOS 26</li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <p class="eyebrow">The short version</p>
+        <h2>Generate your first Genmoji in four steps</h2>
+      </div>
+      <ol class="steps">
+        {useSteps.map((s) => (<li><b>{s.name}</b><span>{s.text}</span></li>))}
+      </ol>
+    </section>
+
+    <section class="prose prose-page">
+      <h2>What is Genmoji?</h2>
+      <p>
+        Genmoji is Apple's generative emoji feature, added in iOS 18.2 in late 2024. You type a
+        description, Apple Intelligence draws it on the device in the familiar emoji house style,
+        and the result drops into your emoji keyboard alongside the standard set.
+      </p>
+      <p>
+        The important detail is what a Genmoji actually <em>is</em>. It is not a new Unicode
+        character — nobody can add those on demand — it is a small image that travels as a sticker.
+        Inside iMessage it behaves almost exactly like an emoji, sitting inline in the text. Sent to
+        an Android phone or pasted into most non-Apple apps, it arrives as a picture. That
+        distinction explains most of the confusion people have with it.
+      </p>
+
+      <h2>Does your iPhone support Genmoji?</h2>
+      <p>
+        Genmoji rides on Apple Intelligence, and Apple Intelligence has a hardware floor that no
+        software update moves. The quick answers to the three questions people actually search for:
+      </p>
+      <ul>
+        <li>
+          <strong>iPhone 14 — no.</strong> Neither the 14 nor the 14 Pro can run Apple Intelligence.
+          This will not change with a future iOS version; the limit is the chip.
+        </li>
+        <li>
+          <strong>iPhone 15 — only the Pro.</strong> The 15 Pro and 15 Pro Max work on iOS 18.2 or
+          later. The standard 15 and 15 Plus ship the older A16 chip and are excluded, which is the
+          single most surprising line in Apple's compatibility list.
+        </li>
+        <li>
+          <strong>iPhone 16 and 17 — yes, every model</strong>, including the 16e. If you bought
+          your phone new in 2025 or 2026, you have it.
+        </li>
+      </ul>
+      <p>
+        iPads and Macs need an M1 chip or later (or the A17 Pro in the iPad mini), running
+        iPadOS 18.2 or macOS Sequoia 15.2 and above. For the full model-by-model grid, including the
+        iPad and Mac lines, see the
+        <a href="/genmoji-not-working/">Genmoji compatibility table</a> on the troubleshooting page.
+      </p>
+
+      <h2>How to get and download Genmoji</h2>
+      <p>
+        There is no Genmoji app, so there is nothing to install from the App Store. Switching on
+        Apple Intelligence under <strong>Settings → Apple Intelligence &amp; Siri</strong> is the
+        whole process — but that action starts a background download of the on-device models, and
+        the feature stays invisible until it finishes.
+      </p>
+      <p>
+        That download is where most people get stuck. It runs only over Wi-Fi, it needs roughly 7GB
+        of free storage, it pauses in Low Power Mode, and it typically takes between fifteen minutes
+        and an hour. If your phone has been showing
+        <a href="/genmoji-not-working/">“downloading support for Genmoji”</a> for hours rather than
+        minutes, one of those four conditions is not being met.
+      </p>
+
+      <h2>What iOS 26 changed</h2>
+      <p>
+        The original iOS 18.2 release only accepted text descriptions. iOS 26 added two things worth
+        knowing about. You can now build a Genmoji by <strong>combining two existing emoji</strong>
+        rather than describing something from scratch — pick a cat and a fire and let it merge them
+        — which is the feature people usually mean when they search for mixing emoji on iPhone.
+        You can also adjust an existing Genmoji's expression and details instead of regenerating it
+        from a fresh prompt.
+      </p>
+      <p>
+        If the combining idea is what brought you here and your device cannot run Genmoji, Google's
+        <a href="/emoji-kitchen/">Emoji Kitchen</a> does the same thing with 147,000 hand-drawn
+        pairs and works in any browser, and the <a href="/emoji-combiner/">emoji combiner</a> will
+        merge any two emoji you choose.
+      </p>
+
+      <h2>Writing prompts that generate well</h2>
+      <p>
+        Genmoji responds best to a concrete subject plus one or two modifiers: “a raccoon in a
+        business suit” lands reliably, “chaotic Monday energy” does not. Keep it under about eight
+        words, name a real object or animal, and add the style detail last. Text is the one thing it
+        will not do — it refuses to render words inside the image, so asking for a sign with writing
+        on it wastes a generation.
+      </p>
+      <p>
+        For a starting library organised by mood, the
+        <a href="/genmoji-prompts/">Genmoji prompts collection</a> has 120+ that are known to work.
+      </p>
+    </section>
+
+    <div class="callout">
+      <p>
+        <strong>Device not supported?</strong> You do not need Apple Intelligence to make a custom
+        emoji. The free <a href="/">emoji maker</a> builds one from Fluent Emoji parts in any
+        browser and exports PNG or SVG, and the
+        <a href="/genmoji-online/">Genmoji online guide</a> compares every alternative for Android,
+        Windows and older iPhones.
+      </p>
+    </div>
+
+    <Faq items={faqItems} />
+
+    <section class="related">
+      <div class="section-head">
+        <p class="eyebrow">More on Genmoji</p>
+        <h2>Keep going</h2>
+      </div>
+      <ul>
+        <li><a href="/genmoji-prompts/"><b>120+ Genmoji Prompts</b><span>Funny, cute and seasonal prompts that generate cleanly.</span></a></li>
+        <li><a href="/genmoji-not-working/"><b>Genmoji Not Working?</b><span>Every fix for the missing button and stuck downloads.</span></a></li>
+        <li><a href="/genmoji-online/"><b>Genmoji Online Guide</b><span>What to use on Android, Windows and unsupported iPhones.</span></a></li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>

@@ -22,6 +22,7 @@ const PAGES = {
   'genmoji-online': ['Genmoji Alternatives', 'for Any Device', 1, 7, 17],
   'genmoji-prompts': ['120+ Genmoji', 'Prompt Ideas', 3, 13, 12],
   'genmoji-not-working': ['Fix Genmoji Not', 'Showing Up', 2, 21, 30],
+  'how-to-use-genmoji': ['How to Use Genmoji', 'on iPhone', 5, 11, 8],
   'emoji-combinations': ['Emoji Combos to', 'Copy & Paste', 6, 3, 2],
   'emoji-combinations-aesthetic': ['Aesthetic Emoji', 'Combinations', 4, 12, 10],
   'emoji-combinations-cute': ['Cute Emoji', 'Combinations', 1, 5, 5],
